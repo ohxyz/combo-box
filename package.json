@@ -1,7 +1,7 @@
 {
   "name": "combo-box",
-  "version": "0.0.3",
-  "description": "An auto-complete text box in React",
+  "version": "0.0.1",
+  "description": "A Combo Box implemented in React",
   "repository": "git@github.com:ohxyz/combo-box.git",
   "scripts": {
     "build": "webpack --config webpack.dev.config.js",
@@ -10,8 +10,7 @@
   "author": "Ohxyz",
   "license": "MIT",
   "keywords": [
-    "textbox",
-    "autofill",
+    "combo box",
     "autocomplete",
     "dropdown"
   ],
