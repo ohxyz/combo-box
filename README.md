@@ -2,4 +2,4 @@
 Do not use.
 
 ## Dev
-`npm run dev --env.component=combo-box`
+`npm run dev -- --env.component=combo-box`
