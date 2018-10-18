@@ -2,7 +2,7 @@ import React from 'react';
 import ComboBoxList from './combo-box-list.js';
 import { componentManager } from '../core/component-manager.js';
 import { generateRandomString, setDefault, isDescendant } from '../../helpers/util.js';
-import { baseItem, makeBaseItems } from './data-model.js';
+import { BaseItem, makeBaseItems } from './data-model.js';
 
 const DEFAULT_NUMBER_OF_STRIKES = 3;
 
@@ -27,6 +27,7 @@ export default class ComboBox extends React.Component {
         this.itemFocused = null;
         this.isTextInputFocused = false;
         this.text = '';
+        this.isIconClicked = false;
 
         this.state = {
 
@@ -48,7 +49,7 @@ export default class ComboBox extends React.Component {
             shouldRenderList: false,
             shouldRenderCount: false,
             shouldRenderIcon: true,
-            iconStyle: 'close',
+            iconStyle: '',
             strikes: DEFAULT_NUMBER_OF_STRIKES
 
         };
@@ -85,7 +86,7 @@ export default class ComboBox extends React.Component {
             shouldRenderCount: setDefault( nextProps.shouldRenderCount, false ),
             shouldRenderIcon: setDefault( nextProps.shouldRenderIcon, true ),
             strikes: numberOfStrikes,
-            iconStyle: setDefault( nextProps.iconStyle, 'close' )
+            iconStyle: setDefault( nextProps.iconStyle, '' )
         };
     }
 
@@ -93,7 +94,7 @@ export default class ComboBox extends React.Component {
 
         let fieldArray = [];
 
-        if ( fields === undefined || Array.isArray( fields ) === false) {
+        if ( fields === undefined || Array.isArray( fields ) === false ) {
 
             fieldArray = this.state.fields;
         }
@@ -334,7 +335,7 @@ export default class ComboBox extends React.Component {
                 <span className="combo-box__count-number">{ count }</span>
                 <span className="combo-box__count-text"> found</span>
             </div>
-        )
+        );
     }
 
     renderIcon() {
@@ -342,9 +343,14 @@ export default class ComboBox extends React.Component {
         return (
 
             <span className="combo-box__icon" onClick={ this.handleIconClick }>
-                <i className="material-icons">{ this.state.iconStyle }</i>
+                { this.renderIconStyle() }
             </span>
         );
+    }
+
+    renderIconStyle() {
+
+        return <span className="combo-box__icon-style">{ this.state.iconStyle }</span>;
     }
 
     renderHeader() {
@@ -413,5 +419,5 @@ export default class ComboBox extends React.Component {
 
 export {
 
-    ComboBox,
-}
+    ComboBox
+};

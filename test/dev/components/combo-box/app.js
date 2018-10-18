@@ -27,7 +27,6 @@ ReactDOM.render(
         onFocus={ self => { console.log( 'focus', self ); } }
         onBlur={ self => console.log( 'blur', self ) }
         items={ usersOrgs }
-        iconStyle="add"
         fields={ [ 'name' ] }
         indexOfFieldsToSort={ 0 }
         strikes="2"

@@ -77,6 +77,7 @@ module.exports = env => {
             contentBase: outputPath,
             compress: true,
             port: 5000,
+            inline: false, /* Only disable auto-reload for browser, not code. */
         },
     };
 };
