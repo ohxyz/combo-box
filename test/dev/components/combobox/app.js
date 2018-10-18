@@ -20,16 +20,16 @@ ReactDOM.render(
         id="seach-box-users-orgs"
         inputId="combo-box-input-id"
         name="my-box"
-        onSelect={ ( item, self ) => { console.log( '*', item ); } }
-        onIconClick= { obj => { console.log( '**', obj ); obj.showAllItems(); } }
-        onChange= { obj => console.log( '***', obj ) }
-        placeholder="Search users by name, department or agency"
-        onFocus={ self => { console.log( 'focus', self ); } }
-        onBlur={ self => console.log( 'blur', self ) }
+        onSelect={ ( item, self ) => { console.log( self ); } }
+        onIconClick= { self => { console.log( self ); self.showAllItems(); } }
+        onChange= { self => console.log( self ) }
+        placeholder="Search..."
+        onFocus={ self => { console.log( self ); } }
+        onBlur={ self => console.log( self ) }
         items={ usersOrgs }
         fields={ [ 'name' ] }
         indexOfFieldsToSort={ 0 }
         strikes="2"
     />,
-    document.getElementById( 'combo-box-1' )
+    document.getElementById( 'my-combobox' )
 );
