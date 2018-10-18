@@ -1,5 +1,5 @@
 import React from 'react';
-import ComboBoxListItem from '../combo-box-list-item.js';
+import ComboboxListItem from '../combobox-list-item.js';
 import renderer from 'react-test-renderer';
 
 let item = { __content__: 'Item content' };
@@ -7,18 +7,18 @@ let item = { __content__: 'Item content' };
 it( 'should render with default settings', () => {
 
     const tree = renderer
-        .create( <ComboBoxListItem item={ item } /> )
+        .create( <ComboboxListItem item={ item } /> )
         .toJSON();
 
     expect( tree ).toMatchSnapshot();
 
 } );
 
-describe( 'ComboBoxListItem instance', () => {
+describe( 'ComboboxListItem instance', () => {
 
     let mockCallback = jest.fn();
     let props = { item: item, onSelect: mockCallback }
-    let listItem = new ComboBoxListItem( props );
+    let listItem = new ComboboxListItem( props );
 
     test( 'can call onSelect from props', () => { 
 

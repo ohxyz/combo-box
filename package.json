@@ -1,11 +1,12 @@
 {
-  "name": "combo-box",
-  "version": "0.0.1",
-  "description": "A Combo Box implemented in React",
-  "repository": "git@github.com:ohxyz/combo-box.git",
+  "name": "@ohxyz/combobox",
+  "version": "1.0.0",
+  "description": "A Combobox implemented in React",
+  "repository": "git@github.com:ohxyz/combobox.git",
   "scripts": {
     "build": "webpack --config webpack.dev.config.js",
-    "dev": "webpack-dev-server --config webpack.dev.config.js --open --env.environ=dev"
+    "dev": "webpack-dev-server --config webpack.dev.config.js --open --env.environ=dev",
+    "babel": "rm -rf lib | babel ./src --out-dir ./lib --presets=react --ignore=__tests__"
   },
   "main": "index.js",
   "author": "Ohxyz",
@@ -16,6 +17,7 @@
     "dropdown"
   ],
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",

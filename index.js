@@ -1,6 +1,6 @@
-const ComboBox = require( './src/components/combo-box/combo-box.js' ).ComboBox;
+const Combobox = require( './lib/components/combobox/combobox.js' ).Combobox;
 
 module.exports = {
 
-    ComboBox
+    Combobox
 };

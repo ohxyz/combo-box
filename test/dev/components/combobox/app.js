@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ComboBox from '../../../../src/components/combo-box/combo-box.js';
-import ComboBoxList from '../../../../src/components/combo-box/combo-box-list.js';
+import Combobox from '../../../../src/components/combobox/combobox.js';
+import ComboboxList from '../../../../src/components/combobox/combobox-list.js';
 
-require( '../../../../less/components/combo-box.less' );
+require( '../../../../less/components/combobox.less' );
 
 const usersOrgs = [
 
@@ -16,7 +16,7 @@ const usersOrgs = [
 
 ReactDOM.render(
 
-    <ComboBox
+    <Combobox
         id="seach-box-users-orgs"
         inputId="combo-box-input-id"
         name="my-box"

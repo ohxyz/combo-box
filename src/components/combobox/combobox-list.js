@@ -1,7 +1,7 @@
 import React from 'react';
-import ComboBoxListItem from './combo-box-list-item.js';
+import ComboboxListItem from './combobox-list-item.js';
 
-export default class ComboBoxList extends React.Component {
+export default class ComboboxList extends React.Component {
 
     constructor( props ) {
 
@@ -11,9 +11,9 @@ export default class ComboBoxList extends React.Component {
 
         this.itemFocused = null;
         this.domElement = null;
-        this.comboBoxListItemElement = null;
+        this.comboboxListItemElement = null;
 
-        this.comboBoxListItemHeight = 0;
+        this.comboboxListItemHeight = 0;
 
         this.state = {
 
@@ -75,21 +75,21 @@ export default class ComboBoxList extends React.Component {
 
     syncScrollBar( indexOfItem ) {
 
-         this.domElement.scrollTop = indexOfItem * this.comboBoxListItemHeight;
+         this.domElement.scrollTop = indexOfItem * this.comboboxListItemHeight;
     }
     
     componentDidMount() {
 
-        // Check this.comboBoxListItemElement.domElement in case there is no ComboBoxListItem
-        if ( this.comboBoxListItemElement === null 
-                || this.comboBoxListItemElement.domElement === null ) {
+        // Check this.comboboxListItemElement.domElement in case there is no ComboboxListItem
+        if ( this.comboboxListItemElement === null 
+                || this.comboboxListItemElement.domElement === null ) {
 
             return;
         }
 
-        let style = window.getComputedStyle( this.comboBoxListItemElement.domElement );
+        let style = window.getComputedStyle( this.comboboxListItemElement.domElement );
 
-        this.comboBoxListItemHeight = parseInt( style.height, 10 );
+        this.comboboxListItemHeight = parseInt( style.height, 10 );
 
         document.addEventListener( 'keydown', this.handleKeyDown );
     }
@@ -112,7 +112,7 @@ export default class ComboBoxList extends React.Component {
         return (
 
             <div 
-                className="combo-box__list"
+                className="combobox__list"
                 ref={ elem => { this.domElement = elem; } }
             >
             {
@@ -128,7 +128,7 @@ export default class ComboBoxList extends React.Component {
 
                     return (
 
-                        <ComboBoxListItem 
+                        <ComboboxListItem 
                             key={ key }
                             item={ item }
                             isFocused={ isFocused }

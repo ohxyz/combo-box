@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ComboBoxListItem extends React.Component {
+export default class ComboboxListItem extends React.Component {
 
     constructor( props ) {
 
@@ -22,8 +22,8 @@ export default class ComboBoxListItem extends React.Component {
         let isFocused = this.props.isFocused;
 
         let className = this.props.isFocused === true
-                      ? 'combo-box__list-item combo-box__list-item--focused'
-                      : 'combo-box__list-item';
+                      ? 'combobox__list-item combobox__list-item--focused'
+                      : 'combobox__list-item';
 
         return (
 

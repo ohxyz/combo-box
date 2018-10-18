@@ -1,5 +1,5 @@
 import React from 'react';
-import ComboBox from '../search-box.js';
+import Combobox from '../search-box.js';
 import { BaseItem } from '../data-model.js';
 import TestRenderer from 'react-test-renderer';
 import ShallowRenderer from 'react-test-renderer/shallow';
@@ -14,13 +14,13 @@ const items = [
     { 'name': 'abcd lady', 'org': 'abce LADY GROUP' }
 ];
 
-describe( 'ComboBox', () => { 
+describe( 'Combobox', () => { 
 
     it( 'creates snapshots', () => {
 
         let component = TestRenderer.create(
 
-            <ComboBox
+            <Combobox
                 id="seach-box-users"
                 name="my-box"
                 onSelect={ () => {} }
@@ -62,7 +62,7 @@ describe( 'ComboBox', () => {
 
 
 
-describe( 'ComboBox React component instance', () => {
+describe( 'Combobox React component instance', () => {
 
     // Stub
     let items = [
@@ -72,7 +72,7 @@ describe( 'ComboBox React component instance', () => {
 
     it( 'static method: getDerivedStateFromProps', () => { 
 
-        let state = ComboBox.getDerivedStateFromProps( {}, {} );
+        let state = Combobox.getDerivedStateFromProps( {}, {} );
         expect( Object.keys( state ).length ).toBe( 18 );
 
     } );
@@ -81,13 +81,13 @@ describe( 'ComboBox React component instance', () => {
     it( 'updateItems method', () => {
 
         let props = { items: items };
-        let comboBox = new ComboBox( props );
-        let spy = jest.spyOn( comboBox, 'filterBaseItemsByText' );
+        let combobox = new ComboBox( props );
+        let spy = jest.spyOn( combobox, 'filterBaseItemsByText' );
 
         // Mock
-        comboBox.textInputElement = { value: 'mocked value' };
-        comboBox.setState = new Function();
-        comboBox.updateItems();
+        combobox.textInputElement = { value: 'mocked value' };
+        combobox.setState = new Function();
+        combobox.updateItems();
 
         expect( spy ).toHaveBeenCalled();
 
@@ -95,10 +95,10 @@ describe( 'ComboBox React component instance', () => {
 
     it( 'renderCount method', () => { 
 
-        let comboBox = new ComboBox( {} );
-        comboBox.state.shouldRenderCount = true;
+        let combobox = new ComboBox( {} );
+        combobox.state.shouldRenderCount = true;
 
-        let result = comboBox.renderCount();
+        let result = combobox.renderCount();
 
         expect( result.props.children[ 0 ].props.children ).toBe( 0 );
     } );

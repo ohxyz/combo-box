@@ -1,12 +1,12 @@
 import React from 'react';
-import ComboBoxList from './combo-box-list.js';
+import ComboboxList from './combobox-list.js';
 import { componentManager } from '../core/component-manager.js';
 import { generateRandomString, setDefault, isDescendant } from '../../helpers/util.js';
 import { BaseItem, makeBaseItems } from './data-model.js';
 
 const DEFAULT_NUMBER_OF_STRIKES = 3;
 
-export default class ComboBox extends React.Component {
+export default class Combobox extends React.Component {
 
     constructor( props ) {
 
@@ -111,7 +111,7 @@ export default class ComboBox extends React.Component {
         } );
     }
 
-    showComboBoxList( items ) {
+    showComboboxList( items ) {
 
         if ( Array.isArray( items ) === true && items.length > 0 ) {
 
@@ -123,7 +123,7 @@ export default class ComboBox extends React.Component {
         }
     }
 
-    clearComboBoxList() {
+    clearComboboxList() {
 
         this.setState( { 
 
@@ -143,7 +143,7 @@ export default class ComboBox extends React.Component {
 
         if ( text.length < this.state.strikes ) {
 
-            this.clearComboBoxList();
+            this.clearComboboxList();
         }
         else { 
 
@@ -151,11 +151,11 @@ export default class ComboBox extends React.Component {
 
             if ( itemsFiltered.length > 0 ) {
 
-                this.showComboBoxList( itemsFiltered );
+                this.showComboboxList( itemsFiltered );
             }
             else { 
 
-                this.clearComboBoxList();
+                this.clearComboboxList();
             }
         }
 
@@ -255,7 +255,7 @@ export default class ComboBox extends React.Component {
         this.textInputElement.value = '';
         this.textInputElement.dataset.text = '';
 
-        this.clearComboBoxList();
+        this.clearComboboxList();
     }
 
     showAllItems() {
@@ -331,9 +331,9 @@ export default class ComboBox extends React.Component {
 
         return (
 
-            <div className="combo-box__count">
-                <span className="combo-box__count-number">{ count }</span>
-                <span className="combo-box__count-text"> found</span>
+            <div className="combobox__count">
+                <span className="combobox__count-number">{ count }</span>
+                <span className="combobox__count-text"> found</span>
             </div>
         );
     }
@@ -342,7 +342,7 @@ export default class ComboBox extends React.Component {
 
         return (
 
-            <span className="combo-box__icon" onClick={ this.handleIconClick }>
+            <span className="combobox__icon" onClick={ this.handleIconClick }>
                 { this.renderIconStyle() }
             </span>
         );
@@ -350,18 +350,18 @@ export default class ComboBox extends React.Component {
 
     renderIconStyle() {
 
-        return <span className="combo-box__icon-style">{ this.state.iconStyle }</span>;
+        return <span className="combobox__icon-style">{ this.state.iconStyle }</span>;
     }
 
     renderHeader() {
 
         return (
 
-            <div className="combo-box__header">
+            <div className="combobox__header">
                 <input
                     id={ this.state.textInputElementId }
                     type="text" 
-                    className="combo-box__field"
+                    className="combobox__field"
                     name={ this.state.name }
                     data-text={ this.text }
                     placeholder={ this.state.placeholder }
@@ -393,12 +393,12 @@ export default class ComboBox extends React.Component {
 
         return (
 
-            <div className="combo-box__content">
-                <ComboBoxList
+            <div className="combobox__content">
+                <ComboboxList
                     items={ this.state.itemsFiltered }
                     onSelect={ this.handleSelect }
                     onListItemFocus={ this.handleListItemFocus }
-                    ref={ elem => { this.comboBoxListElement = elem; } }
+                    ref={ elem => { this.comboboxListElement = elem; } }
                 />
             </div>
         );
@@ -408,7 +408,7 @@ export default class ComboBox extends React.Component {
 
         return (
 
-            <div id={ this.state.domElementId } className="combo-box" ref={ elem => { this.domElement = elem; } } >
+            <div id={ this.state.domElementId } className="combobox" ref={ elem => { this.domElement = elem; } } >
                 { this.renderCount() }
                 { this.renderHeader() }
                 { this.renderContent() }
@@ -419,5 +419,5 @@ export default class ComboBox extends React.Component {
 
 export {
 
-    ComboBox
+    Combobox
 };
