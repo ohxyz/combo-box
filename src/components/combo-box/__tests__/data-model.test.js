@@ -1,18 +1,18 @@
 const module = require( '../data-model.js' );
 
-describe( 'SearchItem object', () => {
+describe( 'BaseItem object', () => {
 
-    let SearchItem = module.SearchItem;
+    let BaseItem = module.BaseItem;
 
     test( 'can accept an empty argument', () => {
 
-        expect( new SearchItem() ).toEqual( { __origin__: undefined, __content__: '', __field__: '' } );
+        expect( new BaseItem() ).toEqual( { __origin__: undefined, __content__: '', __field__: '' } );
     } );
 
     
 } );
 
-describe( 'makeSearchItemsByItems function', () => { 
+describe( 'makeBaseItemsByItems function', () => { 
 
     let items = [
 
@@ -21,18 +21,18 @@ describe( 'makeSearchItemsByItems function', () => {
         { name: 'c' }
     ];
 
-    let fn = module.makeSearchItemsByItems;
+    let fn = module.makeBaseItemsByItems;
 
-    test( 'should have 3 SearchItems', () => { 
+    test( 'should have 3 BaseItems', () => { 
 
         expect( fn( items ).length ).toBe( 3 );
 
     } );
 } );
 
-describe( 'makeSearchItemsByFields function', () => {
+describe( 'makeBaseItemsByFields function', () => {
 
-    let fn = module.makeSearchItemsByFields;
+    let fn = module.makeBaseItemsByFields;
     let items = [
 
         { first: 'name',  next: 'address',  last: 'number'  },

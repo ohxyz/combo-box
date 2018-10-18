@@ -1,6 +1,6 @@
 import React from 'react';
 import ComboBox from '../search-box.js';
-import { SearchItem } from '../data-model.js';
+import { BaseItem } from '../data-model.js';
 import TestRenderer from 'react-test-renderer';
 import ShallowRenderer from 'react-test-renderer/shallow';
 import ReactTestUtils from 'react-dom/test-utils';
@@ -82,7 +82,7 @@ describe( 'ComboBox React component instance', () => {
 
         let props = { items: items };
         let comboBox = new ComboBox( props );
-        let spy = jest.spyOn( comboBox, 'filterSearchItemsByText' );
+        let spy = jest.spyOn( comboBox, 'filterBaseItemsByText' );
 
         // Mock
         comboBox.textInputElement = { value: 'mocked value' };

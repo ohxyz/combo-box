@@ -1,5 +1,4 @@
 import React from 'react';
-import { SearchItem } from './data-model.js';
 
 export default class ComboBoxListItem extends React.Component {
 

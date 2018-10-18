@@ -2,7 +2,7 @@ import React from 'react';
 import ComboBoxList from './combo-box-list.js';
 import { componentManager } from '../core/component-manager.js';
 import { generateRandomString, setDefault, isDescendant } from '../../helpers/util.js';
-import { SearchItem, makeSearchItems } from './data-model.js';
+import { baseItem, makeBaseItems } from './data-model.js';
 
 const DEFAULT_NUMBER_OF_STRIKES = 3;
 
@@ -43,7 +43,7 @@ export default class ComboBox extends React.Component {
             onPropsChange: new Function(),
             onPropsFocus: new Function(),
             onPropsBlur: new Function(),
-            searchItems: [],
+            baseItems: [],
             itemsFiltered: [],
             shouldRenderList: false,
             shouldRenderCount: false,
@@ -81,7 +81,7 @@ export default class ComboBox extends React.Component {
             onPropsBlur: setDefault( nextProps.onBlur, new Function() ),
             fields: setDefault( nextProps.fields, [] ),
             indexOfFieldsToSort: setDefault( nextProps.indexOfFieldsToSort, -1 ),
-            searchItems: makeSearchItems( nextProps.items, nextProps.fields ),
+            baseItems: makeBaseItems( nextProps.items, nextProps.fields ),
             shouldRenderCount: setDefault( nextProps.shouldRenderCount, false ),
             shouldRenderIcon: setDefault( nextProps.shouldRenderIcon, true ),
             strikes: numberOfStrikes,
@@ -98,14 +98,14 @@ export default class ComboBox extends React.Component {
             fieldArray = this.state.fields;
         }
 
-        let searchItems = makeSearchItems( items, fieldArray );
+        let baseItems = makeBaseItems( items, fieldArray );
         let text = this.textInputElement.value;
-        let itemsFiltered = this.filterSearchItemsByText( searchItems, text );
+        let itemsFiltered = this.filterBaseItemsByText( baseItems, text );
 
         this.setState( { 
 
             items: items,
-            searchItems: searchItems,
+            baseItems: baseItems,
             itemsFiltered: itemsFiltered
         } );
     }
@@ -146,7 +146,7 @@ export default class ComboBox extends React.Component {
         }
         else { 
 
-            itemsFiltered = this.filterSearchItemsByText( this.state.searchItems, text );
+            itemsFiltered = this.filterBaseItemsByText( this.state.baseItems, text );
 
             if ( itemsFiltered.length > 0 ) {
 
@@ -182,18 +182,18 @@ export default class ComboBox extends React.Component {
         this.state.onPropsBlur( this );
     }
 
-    filterSearchItemsByText( searchItems, text ) {
+    filterBaseItemsByText( baseItems, text ) {
 
         let itemsFiltered = [];
 
-        for ( let i = 0; i < searchItems.length; i ++ ) {
+        for ( let i = 0; i < baseItems.length; i ++ ) {
 
-            let searchItem = searchItems[ i ];
-            let content = searchItem.__content__.toLowerCase();
+            let baseItem = baseItems[ i ];
+            let content = baseItem.__content__.toLowerCase();
 
             if ( content.indexOf( text.toLowerCase() ) >= 0 ) {
 
-                itemsFiltered.push( searchItem );
+                itemsFiltered.push( baseItem );
             }
         }
 
@@ -211,8 +211,8 @@ export default class ComboBox extends React.Component {
 
             items.sort( ( a, b ) => {
 
-                if ( a instanceof SearchItem === true 
-                        && b instanceof SearchItem === true ) {
+                if ( a instanceof BaseItem === true 
+                        && b instanceof BaseItem === true ) {
 
                     return a.__content__.localeCompare( b.__content__ );
                 }
@@ -238,7 +238,7 @@ export default class ComboBox extends React.Component {
 
         this.textInputElement.value = item.__content__;
         this.textInputElement.dataset.text = item.__content__;
-        let itemsFiltered = this.filterSearchItemsByText( this.state.searchItems, item.__content__ );
+        let itemsFiltered = this.filterBaseItemsByText( this.state.baseItems, item.__content__ );
 
         this.setState( {
 
@@ -261,7 +261,7 @@ export default class ComboBox extends React.Component {
 
         this.setState( {
 
-            itemsFiltered: this.state.searchItems,
+            itemsFiltered: this.state.baseItems,
             shouldRenderList: true
         } );
     }
@@ -290,7 +290,7 @@ export default class ComboBox extends React.Component {
         }
 
         if ( event.key === 'Enter'
-                && ( this.itemFocused instanceof SearchItem ) === true ) {
+                && ( this.itemFocused instanceof BaseItem ) === true ) {
 
             this.handleSelect( this.itemFocused );
         }
@@ -298,7 +298,7 @@ export default class ComboBox extends React.Component {
 
     handleListItemFocus( item ) {
 
-        if ( item instanceof SearchItem === false ) {
+        if ( item instanceof BaseItem === false ) {
 
             return;
         }

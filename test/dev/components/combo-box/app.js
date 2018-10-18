@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ComboBox from '../../../../src/components/combo-box/combo-box.js';
 import ComboBoxList from '../../../../src/components/combo-box/combo-box-list.js';
-import { SearchItem } from '../../../../src/components/combo-box/data-model.js';
 
 require( '../../../../less/components/combo-box.less' );
 

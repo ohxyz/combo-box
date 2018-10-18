@@ -2,7 +2,7 @@
 
 const util = require( '../../helpers/util.js' );
 
-class SearchItem {
+class BaseItem {
 
     constructor( arg ) {
 
@@ -22,7 +22,7 @@ class SearchItem {
 
             this.__content__ = 'null';
         }
-        else if ( util.isObject( arg ) === true || arg instanceof SearchItem === true ) {
+        else if ( util.isObject( arg ) === true || arg instanceof BaseItem === true ) {
 
             this.__content__ = JSON.stringify( arg );
 
@@ -31,26 +31,26 @@ class SearchItem {
     }
 }
 
-function makeSearchItemsByItems( items ) {
+function makeBaseItemsByItems( items ) {
 
     if ( Array.isArray( items ) === false ) {
 
         return [];
     }
 
-    let searchItems = items.map( item => {
+    let baseItems = items.map( item => {
 
-        return new SearchItem( item );
+        return new BaseItem( item );
     } );
 
-    return searchItems;
+    return baseItems;
 }
 
 
 
-function makeSearchItemsByFields( items, fields ) {
+function makeBaseItemsByFields( items, fields ) {
 
-    let searchItems = [];
+    let baseItems = [];
 
     items.map( item => {
 
@@ -61,35 +61,35 @@ function makeSearchItemsByFields( items, fields ) {
                 return ;
             }
 
-            let searchItem = new SearchItem( item );
-            searchItem.__content__ = item[ fieldName ];
-            searchItem.__field__ = fieldName;
+            let baseItem = new BaseItem( item );
+            baseItem.__content__ = item[ fieldName ];
+            baseItem.__field__ = fieldName;
 
-            searchItems.push( searchItem );
+            baseItems.push( baseItem );
 
         } );
 
     } );
 
-    return searchItems;
+    return baseItems;
 }
 
 
-function makeSearchItems( items, fields ) {
+function makeBaseItems( items, fields ) {
 
     if ( Array.isArray( fields ) === true && fields.length > 0 ) {
 
-        return makeSearchItemsByFields( items, fields );
+        return makeBaseItemsByFields( items, fields );
     }
 
-    return makeSearchItemsByItems( items );
+    return makeBaseItemsByItems( items );
 
 }
 
 module.exports = {
 
-    SearchItem,
-    makeSearchItems,
-    makeSearchItemsByItems,
-    makeSearchItemsByFields,
+    BaseItem,
+    makeBaseItems,
+    makeBaseItemsByItems,
+    makeBaseItemsByFields,
 };
