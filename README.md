@@ -1,3 +1,6 @@
+# Quick start
+
+
 # Example
 
 ```
@@ -17,21 +20,16 @@ const users = [
 ReactDOM.render(
     <Combobox
         id="my-combobox"
-        name="my-combobox-name"
-        onSelect={ ( item, self ) => { console.log( self ); } }
-        onIconClick= { self => { console.log( self ); self.showAllItems(); } }
-        onChange= { self => console.log( self ) }
-        placeholder="Search..."
-        onFocus={ self => { console.log( self ); } }
-        onBlur={ self => console.log( self ) }
         items={ users }
+        onSelect={ ( item, comobobox ) => { console.log( comobobox ); } }
+        onIconClick= { comobobox => { console.log( comobobox ); comobobox.showAllItems(); } }
+        onChange= { comobobox => console.log( comobobox ) }
+        placeholder="Search..."
+        onFocus={ comobobox => { console.log( comobobox ); } }
+        onBlur={ comobobox => console.log( comobobox ) }
         fields={ [ 'name', 'org' ] }
-        indexOfFieldsToSort={ 0 }
         strikes="2"
     />,
-    document.getElementById('container')
+    document.getElementById( 'container' )
 );
 ```
-
-## Dev
-`npm run dev -- --env.component=combo-box`

@@ -7,10 +7,32 @@
     font-size: @default-font-size;
     line-height: 24px;
 
+    &__icon {
+
+        width: 48px;
+        height: 48px;
+        top: 1px;
+        right: 1px;
+        position: absolute;
+        cursor: pointer;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-style {
+
+            position: relative;
+            top: 2px;
+            border: 4px transparent solid;
+            border-top: 4px @grey48 solid;
+        }
+    }
+
     &__count {
 
-        position: absolute;
-        right: -80px;
+        text-align: right;
+        height: 25px;
     }
 
     &__header {
@@ -40,7 +62,7 @@
         position: absolute;
         z-index: 100;
         background-color: white;
-        top: 50px;
+        top: 75px;
         left: 0;
         right: 0;
 

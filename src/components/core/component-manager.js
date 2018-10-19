@@ -1,4 +1,5 @@
-/* Manages all UI components and exposed to browsers' window object
+/**
+ * Manages all UI components and expose to browsers' window object
  * 
  */
  

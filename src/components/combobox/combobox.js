@@ -46,8 +46,8 @@ export default class Combobox extends React.Component {
         this.onPropsFocus = setDefault( props.onFocus, new Function() );
         this.onPropsBlur = setDefault( props.onBlur, new Function() );
 
-        this.shouldRenderFullListOnFocusWhenEmpty = setDefault( 
-            props.shouldRenderFullListOnFocusWhenEmpty, true 
+        this.shouldRenderListOnFocus = setDefault( 
+            props.shouldRenderListOnFocus, true 
         );
 
         this.numberOfStrikes = parseInt( props.strikes, 10 );
@@ -74,19 +74,18 @@ export default class Combobox extends React.Component {
 
         let fieldArray = [];
 
-        if ( fields === undefined || Array.isArray( fields ) === false ) {
+        if ( Array.isArray( fields ) === false ) {
 
             fieldArray = this.fields;
         }
 
-        let baseItems = makeBaseItems( items, fieldArray );
-        let text = this.textInputElement.value;
+        this.items = items;
+        this.baseItems = makeBaseItems( items, fieldArray );
+
         let itemsFiltered = this.filterBaseItemsByText( baseItems, text );
 
         this.setState( { 
 
-            items: items,
-            baseItems: baseItems,
             itemsFiltered: itemsFiltered
         } );
     }
@@ -146,8 +145,7 @@ export default class Combobox extends React.Component {
 
         this.isTextInputFocused = true;
 
-        if ( this.shouldRenderFullListOnFocusWhenEmpty === true 
-                && this.text === '' ) {
+        if ( this.shouldRenderListOnFocus === true && this.text === '' ) {
 
             this.showAllItems();
         }
@@ -397,7 +395,10 @@ export default class Combobox extends React.Component {
 
         return (
 
-            <div id={ this.domElementId } className="combobox" ref={ elem => { this.domElement = elem; } } >
+            <div id={ this.domElementId } 
+                className="combobox" 
+                ref={ elem => { this.domElement = elem; } } 
+            >
                 { this.renderCount() }
                 { this.renderHeader() }
                 { this.renderContent() }

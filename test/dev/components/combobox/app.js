@@ -5,7 +5,10 @@ import ComboboxList from '../../../../src/components/combobox/combobox-list.js';
 
 require( '../../../../less/components/combobox.less' );
 
-const users = [ 'abc', 'abd', 'bcd', 'bce', 'bde' ];
+ReactDOM.render(
+    <Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } />,
+    document.getElementById( 'container' )
+);
 
 const usersOrgs = [
 
@@ -17,25 +20,23 @@ const usersOrgs = [
 ];
 
 ReactDOM.render(
-    <Combobox items={ users } />,
-    document.getElementById( 'combobox-1' )
-);
-
-ReactDOM.render(
     <Combobox
+        items={ usersOrgs }
+        fields={ [ 'name' ] }
         id="seach-box-users-orgs"
         inputId="combo-box-input-id"
         inputName="my-box"
-        onSelect={ ( item, self ) => { console.log( self ); } }
-        onIconClick= { self => { console.log( self ); self.showAllItems(); } }
-        onChange= { self => console.log( self ) }
+        shouldRenderCount={ true }
+        shouldRenderListOnFocus={ false }
+        shouldRenderIcon={ true }
+        onIconClick= { comobbox => { console.log( comobbox ); comobbox.showAllItems(); } }
+        onSelect={ ( item, comobbox ) => { console.log( comobbox ); } }
+        onChange= { comobbox => console.log( comobbox ) }
         placeholder="Search..."
-        onFocus={ self => { console.log( self ); } }
-        onBlur={ self => console.log( self ) }
-        items={ usersOrgs }
-        fields={ [ 'name' ] }
+        onFocus={ comobbox => console.log( comobbox ) }
+        onBlur={ comobbox => console.log( comobbox ) }
         indexOfFieldsToSort={ 0 }
         strikes="2"
     />,
-    document.getElementById( 'combobox-2' )
+    document.getElementById( 'container-2' )
 );
