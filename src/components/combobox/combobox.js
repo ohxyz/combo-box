@@ -4,7 +4,7 @@ import { componentManager } from '../core/component-manager.js';
 import { generateRandomString, setDefault, isDescendant } from '../../helpers/util.js';
 import { BaseItem, makeBaseItems } from './data-model.js';
 
-const DEFAULT_NUMBER_OF_STRIKES = 3;
+const DEFAULT_NUMBER_OF_STRIKES = 1;
 
 export default class Combobox extends React.Component {
 
@@ -22,72 +22,52 @@ export default class Combobox extends React.Component {
         this.handleKeyDown = this.handleKeyDown.bind( this );
 
         this.textInputElement = null;
+        this.textInputElementId = setDefault( props.inputId, undefined );
+        this.textInputElementName = setDefault( props.inputName, undefined );
+        this.text = '';
+
+        this.items = setDefault( props.items, [] );
+        this.fields = setDefault( props.fields, [] );
+        this.baseItems = makeBaseItems( props.items, this.fields );
+        
         this.comboBoxListElement = null;
         this.domElement = null;
         this.itemFocused = null;
         this.isTextInputFocused = false;
-        this.text = '';
         this.isIconClicked = false;
+        this.iconStyle = setDefault( props.iconStyle, '' );
+        this.domElementId = setDefault( props.id, undefined );
+        this.placeholder = setDefault( props.placeholder, '');
+        this.indexOfFieldsToSort = setDefault( props.indexOfFieldsToSort, -1 );
+
+        this.onPropsSelect = setDefault( props.onSelect, new Function() );
+        this.onPropsIconClick =  setDefault( props.onIconClick, new Function() );
+        this.onPropsChange = setDefault( props.onChange, new Function() );
+        this.onPropsFocus = setDefault( props.onFocus, new Function() );
+        this.onPropsBlur = setDefault( props.onBlur, new Function() );
+
+        this.shouldRenderFullListOnFocusWhenEmpty = setDefault( 
+            props.shouldRenderFullListOnFocusWhenEmpty, true 
+        );
+
+        this.numberOfStrikes = parseInt( props.strikes, 10 );
+
+        if ( isNaN( this.numberOfStrikes ) || this.numberOfStrikes < 1 ) {
+
+            this.numberOfStrikes = DEFAULT_NUMBER_OF_STRIKES;
+        }
 
         this.state = {
 
-            domElementId: undefined,
-            textInputElementId: undefined,
-            name: undefined,
-            fields: [],
-            indexOfFieldsToSort: -1,
-            placeholder: '',
-            items: [],
-            text: '',
-            onPropsSelect: new Function(),
-            onPropsIconClick: new Function(),
-            onPropsChange: new Function(),
-            onPropsFocus: new Function(),
-            onPropsBlur: new Function(),
-            baseItems: [],
             itemsFiltered: [],
-            shouldRenderList: false,
-            shouldRenderCount: false,
-            shouldRenderIcon: true,
-            iconStyle: '',
-            strikes: DEFAULT_NUMBER_OF_STRIKES
-
+            shouldRenderList: setDefault( props.shouldRenderList, false ),
+            shouldRenderCount: setDefault( props.shouldRenderCount, false ),
+            shouldRenderIcon: setDefault( props.shouldRenderIcon, false )
         };
         
         this.id = setDefault( props.id, generateRandomString() );
-        componentManager.addComponent( this.id, this );
-    }
-
-    static getDerivedStateFromProps( nextProps, prevState ) {
-
-        let numberOfStrikes = parseInt( nextProps.strikes, 10 );
-
-        if ( isNaN( numberOfStrikes ) || numberOfStrikes < 1 ) {
-
-            numberOfStrikes = DEFAULT_NUMBER_OF_STRIKES;
-        }
         
-        return {
-
-            domElementId: setDefault( nextProps.id, undefined ),
-            textInputElementId: setDefault( nextProps.inputId, undefined ),
-            name: setDefault( nextProps.name, undefined ),
-            items: setDefault( nextProps.items, [] ),
-            text: setDefault( nextProps.text, '' ),
-            placeholder: setDefault( nextProps.placeholder, ''),
-            onPropsSelect: setDefault( nextProps.onSelect, new Function() ),
-            onPropsIconClick: setDefault( nextProps.onIconClick, new Function() ),
-            onPropsChange: setDefault( nextProps.onChange, new Function() ),
-            onPropsFocus: setDefault( nextProps.onFocus, new Function() ),
-            onPropsBlur: setDefault( nextProps.onBlur, new Function() ),
-            fields: setDefault( nextProps.fields, [] ),
-            indexOfFieldsToSort: setDefault( nextProps.indexOfFieldsToSort, -1 ),
-            baseItems: makeBaseItems( nextProps.items, nextProps.fields ),
-            shouldRenderCount: setDefault( nextProps.shouldRenderCount, false ),
-            shouldRenderIcon: setDefault( nextProps.shouldRenderIcon, true ),
-            strikes: numberOfStrikes,
-            iconStyle: setDefault( nextProps.iconStyle, '' )
-        };
+        componentManager.addComponent( this.id, this );
     }
 
     updateItems( items, fields ) {
@@ -96,7 +76,7 @@ export default class Combobox extends React.Component {
 
         if ( fields === undefined || Array.isArray( fields ) === false ) {
 
-            fieldArray = this.state.fields;
+            fieldArray = this.fields;
         }
 
         let baseItems = makeBaseItems( items, fieldArray );
@@ -141,13 +121,13 @@ export default class Combobox extends React.Component {
 
         this.text = text;
 
-        if ( text.length < this.state.strikes ) {
+        if ( text.length < this.numberOfStrikes ) {
 
             this.clearComboboxList();
         }
         else { 
 
-            itemsFiltered = this.filterBaseItemsByText( this.state.baseItems, text );
+            itemsFiltered = this.filterBaseItemsByText( this.baseItems, text );
 
             if ( itemsFiltered.length > 0 ) {
 
@@ -159,14 +139,19 @@ export default class Combobox extends React.Component {
             }
         }
 
-        this.state.onPropsChange( this );
+        this.onPropsChange( this );
     }
 
     handleTextInputFocus() {
 
         this.isTextInputFocused = true;
 
-        if ( this.state.itemsFiltered.length > 0 ) {
+        if ( this.shouldRenderFullListOnFocusWhenEmpty === true 
+                && this.text === '' ) {
+
+            this.showAllItems();
+        }
+        else if ( this.state.itemsFiltered.length > 0 ) {
 
             this.setState( {
 
@@ -174,13 +159,13 @@ export default class Combobox extends React.Component {
             } );
         }
 
-        this.state.onPropsFocus( this );
+        this.onPropsFocus( this );
     }
 
     handleTextInputBlur() {
 
         this.isTextInputFocused = false;
-        this.state.onPropsBlur( this );
+        this.onPropsBlur( this );
     }
 
     filterBaseItemsByText( baseItems, text ) {
@@ -239,7 +224,7 @@ export default class Combobox extends React.Component {
 
         this.textInputElement.value = item.__content__;
         this.textInputElement.dataset.text = item.__content__;
-        let itemsFiltered = this.filterBaseItemsByText( this.state.baseItems, item.__content__ );
+        let itemsFiltered = this.filterBaseItemsByText( this.baseItems, item.__content__ );
 
         this.setState( {
 
@@ -247,7 +232,7 @@ export default class Combobox extends React.Component {
             shouldRenderList: false,
         } );
 
-        this.state.onPropsSelect( item, this );
+        this.onPropsSelect( item, this );
     }
 
     clearSearch() {
@@ -262,14 +247,14 @@ export default class Combobox extends React.Component {
 
         this.setState( {
 
-            itemsFiltered: this.state.baseItems,
+            itemsFiltered: this.baseItems,
             shouldRenderList: true
         } );
     }
 
     handleIconClick() {
 
-        this.state.onPropsIconClick( this );
+        this.onPropsIconClick( this );
     }
 
     handleClickOutside( event ) {
@@ -340,8 +325,12 @@ export default class Combobox extends React.Component {
 
     renderIcon() {
 
-        return (
+        if ( this.state.shouldRenderIcon === false ) {
 
+            return;
+        }
+
+        return (
             <span className="combobox__icon" onClick={ this.handleIconClick }>
                 { this.renderIconStyle() }
             </span>
@@ -350,7 +339,7 @@ export default class Combobox extends React.Component {
 
     renderIconStyle() {
 
-        return <span className="combobox__icon-style">{ this.state.iconStyle }</span>;
+        return <span className="combobox__icon-style">{ this.iconStyle }</span>;
     }
 
     renderHeader() {
@@ -359,12 +348,12 @@ export default class Combobox extends React.Component {
 
             <div className="combobox__header">
                 <input
-                    id={ this.state.textInputElementId }
+                    id={ this.textInputElementId }
                     type="text" 
                     className="combobox__field"
-                    name={ this.state.name }
+                    name={ this.textInputElementName }
                     data-text={ this.text }
-                    placeholder={ this.state.placeholder }
+                    placeholder={ this.placeholder }
                     onChange={ this.handleTextInputChange }
                     onFocus={ this.handleTextInputFocus }
                     onBlur={ this.handleTextInputBlur }
@@ -386,8 +375,8 @@ export default class Combobox extends React.Component {
         this.sortByIndexOfFields( {
 
             items: this.state.itemsFiltered,
-            fields: this.state.fields,
-            index: this.state.indexOfFieldsToSort
+            fields: this.fields,
+            index: this.indexOfFieldsToSort
 
         } );
 
@@ -408,7 +397,7 @@ export default class Combobox extends React.Component {
 
         return (
 
-            <div id={ this.state.domElementId } className="combobox" ref={ elem => { this.domElement = elem; } } >
+            <div id={ this.domElementId } className="combobox" ref={ elem => { this.domElement = elem; } } >
                 { this.renderCount() }
                 { this.renderHeader() }
                 { this.renderContent() }

@@ -5,6 +5,8 @@ import ComboboxList from '../../../../src/components/combobox/combobox-list.js';
 
 require( '../../../../less/components/combobox.less' );
 
+const users = [ 'abc', 'abd', 'bcd', 'bce', 'bde' ];
+
 const usersOrgs = [
 
     { 'org': 'abcde Transport' },
@@ -15,11 +17,15 @@ const usersOrgs = [
 ];
 
 ReactDOM.render(
+    <Combobox items={ users } />,
+    document.getElementById( 'combobox-1' )
+);
 
+ReactDOM.render(
     <Combobox
         id="seach-box-users-orgs"
         inputId="combo-box-input-id"
-        name="my-box"
+        inputName="my-box"
         onSelect={ ( item, self ) => { console.log( self ); } }
         onIconClick= { self => { console.log( self ); self.showAllItems(); } }
         onChange= { self => console.log( self ) }
@@ -31,5 +37,5 @@ ReactDOM.render(
         indexOfFieldsToSort={ 0 }
         strikes="2"
     />,
-    document.getElementById( 'my-combobox' )
+    document.getElementById( 'combobox-2' )
 );

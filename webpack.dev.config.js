@@ -2,9 +2,9 @@ var path = require( 'path' );
 
 module.exports = env => {
 
-    let environ = env.environ;
-    let componentName = env.component;
-    let appName = env.app;
+    const environ = env.NODE_ENV;
+    const componentName = env.COMPONENT;
+    const appName = env.APP;
 
     let outputPath = path.join( __dirname, 'test/dev' );
     let entryPath = './src/app.js';
@@ -18,7 +18,7 @@ module.exports = env => {
     let fileName = '';
     let folder = '';
 
-    if ( environ === 'uat' || environ === 'dev' ) { 
+    if ( environ === 'dev' ) { 
 
         // Todo: check componentName's actual type, eg. '', undefined or null
         if ( componentName ) {
@@ -56,7 +56,6 @@ module.exports = env => {
                     test: /\.js[x]{0,1}$/,
                     exclude: /node_modules/,
                     use: {
-
                         loader: 'babel-loader',
                         options: {
                             presets: [ 'react', 'env' ]

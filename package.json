@@ -5,14 +5,13 @@
   "repository": "git@github.com:ohxyz/combobox.git",
   "scripts": {
     "build": "webpack --config webpack.dev.config.js",
-    "dev": "webpack-dev-server --config webpack.dev.config.js --open --env.environ=dev",
+    "dev": "webpack-dev-server --config webpack.dev.config.js --open --env.NODE_ENV=dev --env.COMPONENT=combobox",
     "babel": "rm -rf lib | babel ./src --out-dir ./lib --presets=react --ignore=__tests__"
   },
   "main": "index.js",
   "author": "Ohxyz",
   "license": "MIT",
   "keywords": [
-    "combo box",
     "autocomplete",
     "dropdown"
   ],
