@@ -10,15 +10,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Combobox } from '@ohxyz/combobox';
-
-require( '../../../../less/components/combobox.less' );
+import '@ohxyz/combobox/style/default.css';
 
 const users = [
-
     { 'org': 'abcde org' },
     { 'org': 'abcd org', name: 'abc' },
     { 'org': 'abce corp', name: 'bcd man' },
-    { 'name': 'Mr abcd ' },
+    { 'name': 'Mr abcd' },
     { 'name': 'Ms cde', 'org': 'abce corp' },
     { 'other': 'na' }
 ];
@@ -42,6 +40,6 @@ ReactDOM.render(
         indexOfFieldsToSort={ 0 }
         strikes="2"
     />,
-    document.getElementById( 'container-2' )
+    document.getElementById( 'container' )
 );
 ```

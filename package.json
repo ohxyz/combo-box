@@ -1,6 +1,6 @@
 {
   "name": "@ohxyz/combobox",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A Combobox implemented in React",
   "repository": "git@github.com:ohxyz/combobox.git",
   "scripts": {
