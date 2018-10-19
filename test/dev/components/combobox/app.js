@@ -29,12 +29,12 @@ ReactDOM.render(
         shouldRenderCount={ true }
         shouldRenderListOnFocus={ false }
         shouldRenderIcon={ true }
-        onIconClick= { comobbox => { console.log( comobbox ); comobbox.toggleAllItems(); } }
-        onSelect={ ( item, comobbox ) => { console.log( comobbox ); } }
-        onChange= { comobbox => console.log( comobbox ) }
+        onIconClick= { combobox => { console.log( combobox ); combobox.toggleAllItems(); } }
+        onSelect={ ( item, combobox ) => { console.log( combobox ); } }
+        onChange= { combobox => console.log( combobox ) }
         placeholder="Search..."
-        onFocus={ comobbox => console.log( comobbox ) }
-        onBlur={ comobbox => console.log( comobbox ) }
+        onFocus={ combobox => console.log( combobox ) }
+        onBlur={ combobox => console.log( combobox ) }
         indexOfFieldsToSort={ 0 }
         strikes="2"
     />,
