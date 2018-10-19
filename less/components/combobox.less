@@ -6,6 +6,7 @@
     position: relative;
     font-size: @default-font-size;
     line-height: 24px;
+    width: 80%;
 
     &__icon {
 
@@ -31,8 +32,9 @@
 
     &__count {
 
-        text-align: right;
-        height: 25px;
+        position: absolute;
+        right: -64px;
+        top: 12px;
     }
 
     &__header {
@@ -62,7 +64,7 @@
         position: absolute;
         z-index: 100;
         background-color: white;
-        top: 75px;
+        top: 50px;
         left: 0;
         right: 0;
 
@@ -86,7 +88,7 @@
 
             &--focused {
 
-                background-color: @grey4;
+                background-color: @grey48;
             }
         }
     }

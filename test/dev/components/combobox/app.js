@@ -10,26 +10,26 @@ ReactDOM.render(
     document.getElementById( 'container' )
 );
 
-const usersOrgs = [
+const users = [
 
-    { 'org': 'abcde Transport' },
-    { 'org': 'abcd Education', name: 'abcd' },
-    { 'org': 'abce Health', name: 'abce health people' },
-    { 'name': 'Mr abcdg ' },
-    { 'name': 'abcd lady', 'org': 'abce LADY GROUP' }
+    { 'org': 'abcde org' },
+    { 'org': 'abcd org', name: 'abc' },
+    { 'org': 'abce corp', name: 'bcd man' },
+    { 'name': 'Mr abcd ' },
+    { 'name': 'Ms cde', 'org': 'abce corp' }
 ];
 
 ReactDOM.render(
     <Combobox
-        items={ usersOrgs }
+        items={ users }
         fields={ [ 'name' ] }
-        id="seach-box-users-orgs"
-        inputId="combo-box-input-id"
-        inputName="my-box"
+        id="my-combobox"
+        inputId="my-combobox__input-id"
+        inputName="my-combobox__input-name"
         shouldRenderCount={ true }
         shouldRenderListOnFocus={ false }
         shouldRenderIcon={ true }
-        onIconClick= { comobbox => { console.log( comobbox ); comobbox.showAllItems(); } }
+        onIconClick= { comobbox => { console.log( comobbox ); comobbox.toggleAllItems(); } }
         onSelect={ ( item, comobbox ) => { console.log( comobbox ); } }
         onChange= { comobbox => console.log( comobbox ) }
         placeholder="Search..."
