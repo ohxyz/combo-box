@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Combobox from '../../../../src/components/combobox/combobox.js';
-import ComboboxList from '../../../../src/components/combobox/combobox-list.js';
 
 require( '../../../../less/components/combobox.less' );
 
@@ -16,13 +15,14 @@ const users = [
     { 'org': 'abcd org', name: 'abc' },
     { 'org': 'abce corp', name: 'bcd man' },
     { 'name': 'Mr abcd ' },
-    { 'name': 'Ms cde', 'org': 'abce corp' }
+    { 'name': 'Ms cde', 'org': 'abce corp' },
+    { 'other': 'na' }
 ];
 
 ReactDOM.render(
     <Combobox
         items={ users }
-        fields={ [ 'name' ] }
+        fields={ [ 'name', 'org' ] }
         id="my-combobox"
         inputId="my-combobox__input-id"
         inputName="my-combobox__input-name"

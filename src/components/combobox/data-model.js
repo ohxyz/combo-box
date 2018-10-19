@@ -4,7 +4,7 @@ const util = require( '../../helpers/util.js' );
 
 class BaseItem {
 
-    constructor( arg ) {
+    constructor( arg, fields ) {
 
         this.__content__ = '';
         this.__field__ = '';
@@ -24,7 +24,24 @@ class BaseItem {
         }
         else if ( util.isObject( arg ) === true || arg instanceof BaseItem === true ) {
 
-            this.__content__ = JSON.stringify( arg );
+            if ( Array.isArray( fields ) === true ) {
+
+                let contents = [];
+
+                for ( let argProp of fields ) {
+
+                    if ( arg[ argProp ] !== undefined ) {
+                        
+                        contents.push( arg[ argProp ].toString() );
+                    }
+
+                    this.__content__ = contents.join( ', ' );
+                }
+            }
+            else {
+
+                this.__content__ = JSON.stringify( arg );
+            }
 
             Object.assign( this, arg );
         }
@@ -46,30 +63,30 @@ function makeBaseItemsByItems( items ) {
     return baseItems;
 }
 
-
-
 function makeBaseItemsByFields( items, fields ) {
 
-    let baseItems = [];
+    let itemsHandled = new Set();
+    
 
-    items.map( item => {
+    for ( let item of items ) {
 
-        fields.map( fieldName => { 
+        for ( let fieldName of fields ) { 
 
             if ( item.hasOwnProperty( fieldName ) === false ) {
 
-                return ;
+                continue;
             }
 
-            let baseItem = new BaseItem( item );
-            baseItem.__content__ = item[ fieldName ];
-            baseItem.__field__ = fieldName;
+            itemsHandled.add( item );
+        }
+    }
 
-            baseItems.push( baseItem );
+    let baseItems = [];
 
-        } );
+    for ( let item of itemsHandled ) {
 
-    } );
+        baseItems.push( new BaseItem( item, fields ) );
+    }
 
     return baseItems;
 }

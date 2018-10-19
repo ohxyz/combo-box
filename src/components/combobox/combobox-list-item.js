@@ -1,4 +1,5 @@
 import React from 'react';
+import util from '../../helpers/util.js';
 
 export default class ComboboxListItem extends React.Component {
 

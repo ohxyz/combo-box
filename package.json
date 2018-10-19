@@ -4,9 +4,10 @@
   "description": "A Combobox implemented in React",
   "repository": "git@github.com:ohxyz/combobox.git",
   "scripts": {
-    "build": "webpack --config webpack.dev.config.js",
     "dev": "webpack-dev-server --config webpack.dev.config.js --open --env.NODE_ENV=dev --env.COMPONENT=combobox",
-    "babel": "rm -rf lib | babel ./src --out-dir ./lib --presets=react --ignore=__tests__"
+    "babel": "rm -rf lib | babel ./src --out-dir ./lib --presets=react --ignore=__tests__",
+    "less": "lessc ./less/components/combobox.less ./style/default.css",
+    "build": "npm run babel | npm run less"
   },
   "main": "index.js",
   "author": "Ohxyz",
