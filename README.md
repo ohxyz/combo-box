@@ -1,7 +1,9 @@
 # Quick start
 
 ```
-<Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } onSelect={ item => console.log( item ) } />
+<Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } 
+          onSelect={ item => console.log( item.toString() ) } 
+/>
 ```
 
 # More
@@ -32,7 +34,7 @@ ReactDOM.render(
         shouldRenderListOnFocus={ false }
         shouldRenderIcon={ true }
         onIconClick= { combobox => { console.log( combobox ); combobox.toggleAllItems(); } }
-        onSelect={ ( item, combobox ) => { console.log( combobox ); } }
+        onSelect={ ( item, combobox ) => { console.log( item, combobox ); } }
         onChange= { combobox => console.log( combobox ) }
         placeholder="Search..."
         onFocus={ combobox => console.log( combobox ) }
