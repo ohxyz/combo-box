@@ -7,10 +7,15 @@ class BaseItem {
     constructor( arg, fields ) {
 
         this.__content__ = '';
-        this.__field__ = '';
+        this.__fields__ = [];
         this.__origin__ = arg;
 
         let type = typeof arg;
+
+        if ( Array.isArray( fields ) === true ) {
+
+            this.__fields__ = fields;
+        }
 
         if ( type === 'string'
                 || type === 'number'
@@ -20,7 +25,7 @@ class BaseItem {
         }
         else if ( arg === null ) {
 
-            this.__content__ = 'null';
+            this.__content__ = '';
         }
         else if ( util.isObject( arg ) === true || arg instanceof BaseItem === true ) {
 
@@ -46,6 +51,11 @@ class BaseItem {
             Object.assign( this, arg );
         }
     }
+
+    toString() {
+
+        return this.__content__;
+    }
 }
 
 function makeBaseItemsByItems( items ) {
@@ -66,7 +76,6 @@ function makeBaseItemsByItems( items ) {
 function makeBaseItemsByFields( items, fields ) {
 
     let itemsHandled = new Set();
-    
 
     for ( let item of items ) {
 
@@ -100,7 +109,6 @@ function makeBaseItems( items, fields ) {
     }
 
     return makeBaseItemsByItems( items );
-
 }
 
 module.exports = {

@@ -252,7 +252,6 @@ export default class Combobox extends React.Component {
 
     toggleAllItems() {
 
-
         this.setState( {
 
             itemsFiltered: this.baseItems,

@@ -12,6 +12,23 @@ function isObject( a ) {
     return ( !!a ) && ( a.constructor === Object );
 };
 
+function isUndefinedStringNumberBooleanOrNull( arg ) {
+
+    if ( arg === undefined || arg === null ) {
+
+        return true;
+    }
+
+    let type = typeof arg;
+
+    if ( type === 'string' || type === 'number' || type === 'boolean' ) {
+
+        return true;
+    }
+
+    return false;
+}
+
 
 function generateRandomString() {
 
@@ -154,5 +171,6 @@ module.exports = {
     isNotEmptyArray,
     compareArrayOfNonObjects,
     findIndexFromArrayOfArray,
-    unionArrayOfArray
+    unionArrayOfArray,
+    isUndefinedStringNumberBooleanOrNull
 };
