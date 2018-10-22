@@ -236,6 +236,7 @@ export default class Combobox extends React.Component {
 
     handleSelect( item ) {
 
+        this.itemFocused = item;
         this.textInputElement.value = item.__string__;
         this.textInputElement.dataset.text = item.__string__;
         let baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, item.__string__ );
@@ -243,6 +244,7 @@ export default class Combobox extends React.Component {
         this.setState( {
 
             baseItemsFiltered: baseItemsFiltered,
+            indexOfItemFocused: -1,
             shouldRenderList: false,
         } );
 
@@ -316,6 +318,8 @@ export default class Combobox extends React.Component {
     }
 
     handleItemNavigation( event ) {
+
+        console.log( this.state );
 
         if ( this.state.shouldRenderList === false ) {
 
@@ -500,7 +504,7 @@ export default class Combobox extends React.Component {
                             key={ key }
                             item={ item }
                             isFocused={ isFocused }
-                            onSelect={ this.onPropsSelect }
+                            onSelect={ this.handleSelect }
                             ref={ this.listItemRef }
                         />
                     );
