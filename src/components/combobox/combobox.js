@@ -500,7 +500,7 @@ export default class Combobox extends React.Component {
                             key={ key }
                             item={ item }
                             isFocused={ isFocused }
-                            onSelect={ this.onPropsSelect }
+                            onSelect={ this.handleSelect }
                             ref={ this.listItemRef }
                         />
                     );
