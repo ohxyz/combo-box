@@ -6,10 +6,7 @@ import { generateRandomString,
          setDefault, 
          isDescendant,
          isUndefinedStringNumberBooleanOrNull
-} from '../../helpers/util.js';
-
-
-const DEFAULT_NUMBER_OF_STRIKES = 1;
+       } from '../../helpers/util.js';
 
 export default class Combobox extends React.Component {
 
@@ -29,8 +26,6 @@ export default class Combobox extends React.Component {
         this.renderList = this.renderList.bind( this );
 
         this.textInputElement = null;
-        this.textInputElementId = setDefault( props.inputId, undefined );
-        this.textInputElementName = setDefault( props.inputName, undefined );
         this.text = '';
         this.listElement = null;
 
@@ -38,69 +33,22 @@ export default class Combobox extends React.Component {
         this.listItemRef = React.createRef();
         this.listItemHeight = 0;
 
-        this.items = setDefault( props.items, [] );
-        this.fields = setDefault( props.fields, [] );
-        this.baseItems = makeBaseItems( props.items, this.fields );
+        this.baseItems = makeBaseItems( props.items, props.fields );
         
         this.comboBoxListElement = null;
         this.domElement = null;
         this.itemFocused = null;
         this.isTextInputFocused = false;
         this.isIconClicked = false;
-        this.iconStyle = setDefault( props.iconStyle, '' );
-        this.domElementId = setDefault( props.id, undefined );
-        this.placeholder = setDefault( props.placeholder, '');
-        this.indexOfFieldsToSort = setDefault( props.indexOfFieldsToSort, -1 );
-
-        this.onPropsSelect = setDefault( props.onSelect, new Function() );
-        this.onPropsIconClick =  setDefault( props.onIconClick, new Function() );
-        this.onPropsChange = setDefault( props.onChange, new Function() );
-        this.onPropsFocus = setDefault( props.onFocus, new Function() );
-        this.onPropsBlur = setDefault( props.onBlur, new Function() );
-
-        this.shouldRenderListOnFocus = setDefault( 
-            props.shouldRenderListOnFocus, true 
-        );
-
-        this.numberOfStrikes = parseInt( props.strikes, 10 );
-
-        if ( isNaN( this.numberOfStrikes ) || this.numberOfStrikes < 1 ) {
-
-            this.numberOfStrikes = DEFAULT_NUMBER_OF_STRIKES;
-        }
 
         this.state = {
 
             baseItemsFiltered: [],
             indexOfItemFocused: -1,
-            shouldRenderList: false,
-            shouldRenderCount: setDefault( props.shouldRenderCount, false ),
-            shouldRenderIcon: setDefault( props.shouldRenderIcon, false )
+            shouldRenderList: false
         };
-        
-        this.id = setDefault( props.id, generateRandomString() );
-        
-        componentManager.addComponent( this.id, this );
-    }
 
-    updateItems( items, fields ) {
-
-        let fieldArray = [];
-
-        if ( Array.isArray( fields ) === false ) {
-
-            fieldArray = this.fields;
-        }
-
-        this.items = items;
-        this.baseItems = makeBaseItems( items, fieldArray );
-
-        let baseItemsFiltered = this.filterBaseItemsByText( baseItems, text );
-
-        this.setState( { 
-
-            baseItemsFiltered: baseItemsFiltered
-        } );
+        componentManager.addComponent( this.props.id, this );
     }
 
     showComboboxList( items ) {
@@ -120,7 +68,8 @@ export default class Combobox extends React.Component {
         this.setState( { 
 
             baseItemsFiltered: [],
-            shouldRenderList: false
+            shouldRenderList: false,
+            indexOfItemFocused: -1,
         } );
     }
 
@@ -133,7 +82,14 @@ export default class Combobox extends React.Component {
 
         this.text = text;
 
-        if ( text.length < this.numberOfStrikes ) {
+        let numberOfStrikes = parseInt( this.props.strikes, 10 );
+
+        if ( isNaN( numberOfStrikes ) || numberOfStrikes < 1 ) {
+
+            numberOfStrikes = DEFAULT_NUMBER_OF_STRIKES;
+        }
+
+        if ( text.length < numberOfStrikes ) {
 
             this.clearComboboxList();
         }
@@ -151,14 +107,14 @@ export default class Combobox extends React.Component {
             }
         }
 
-        this.onPropsChange( this );
+        this.props.onChange( this );
     }
 
     handleTextInputFocus() {
 
         this.isTextInputFocused = true;
 
-        if ( this.shouldRenderListOnFocus === true && this.text === '' ) {
+        if ( this.props.shouldRenderListOnFocus === true && this.text === '' ) {
 
             this.showAllItems();
         }
@@ -170,13 +126,13 @@ export default class Combobox extends React.Component {
             } );
         }
 
-        this.onPropsFocus( this );
+        this.props.onFocus( this );
     }
 
     handleTextInputBlur() {
 
         this.isTextInputFocused = false;
-        this.onPropsBlur( this );
+        this.props.onBlur( this );
     }
 
     filterBaseItemsByText( baseItems, text ) {
@@ -234,27 +190,25 @@ export default class Combobox extends React.Component {
         }
     }
 
-    handleSelect( item ) {
+    handleSelect( baseItem ) {
 
-        this.itemFocused = item;
-        this.textInputElement.value = item.__string__;
-        this.textInputElement.dataset.text = item.__string__;
-        let baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, item.__string__ );
+        this.textInputElement.value = baseItem.__string__;
+        this.textInputElement.dataset.text = baseItem.__string__;
+        let baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, baseItem.__string__ );
 
         this.setState( {
 
             baseItemsFiltered: baseItemsFiltered,
-            indexOfItemFocused: -1,
             shouldRenderList: false,
         } );
 
-        if ( isUndefinedStringNumberBooleanOrNull( item.__origin__ ) === true ) {
+        if ( isUndefinedStringNumberBooleanOrNull( baseItem.__origin__ ) === true ) {
 
-            this.onPropsSelect( item.__origin__, this );
+            this.props.onSelect( baseItem.__origin__, this );
         }
         else {
 
-            this.onPropsSelect( item, this );
+            this.props.onSelect( baseItem, this );
         }
     }
 
@@ -286,7 +240,7 @@ export default class Combobox extends React.Component {
 
     handleIconClick() {
 
-        this.onPropsIconClick( this );
+        this.props.onIconClick( this );
     }
 
     handleClickOutside( event ) {
@@ -318,8 +272,6 @@ export default class Combobox extends React.Component {
     }
 
     handleItemNavigation( event ) {
-
-        console.log( this.state );
 
         if ( this.state.shouldRenderList === false ) {
 
@@ -386,6 +338,13 @@ export default class Combobox extends React.Component {
         this.listElement.scrollTop = indexOfItem * this.listItemHeight;
     }
 
+    shouldComponentUpdate( nextProps, nextState ) {
+
+        this.baseItems = makeBaseItems( nextProps.items, nextProps.fields );
+
+        return true;
+    }
+
     componentDidMount() {
         
         document.addEventListener( 'mouseup', this.handleClickOutside );
@@ -400,7 +359,7 @@ export default class Combobox extends React.Component {
 
     renderCount() {
 
-        if ( this.state.shouldRenderCount === false ) {
+        if ( this.props.shouldRenderCount === false ) {
 
             return;
         }
@@ -418,7 +377,7 @@ export default class Combobox extends React.Component {
 
     renderIcon() {
 
-        if ( this.state.shouldRenderIcon === false ) {
+        if ( this.props.shouldRenderIcon === false ) {
 
             return;
         }
@@ -432,7 +391,7 @@ export default class Combobox extends React.Component {
 
     renderIconStyle() {
 
-        return <span className="combobox__icon-style">{ this.iconStyle }</span>;
+        return <span className="combobox__icon-style">{ this.props.iconStyle }</span>;
     }
 
     renderHeader() {
@@ -441,12 +400,12 @@ export default class Combobox extends React.Component {
 
             <div className="combobox__header">
                 <input
-                    id={ this.textInputElementId }
+                    id={ this.props.textInputElementId }
                     type="text" 
                     className="combobox__field"
-                    name={ this.textInputElementName }
+                    name={ this.props.textInputElementName }
                     data-text={ this.text }
-                    placeholder={ this.placeholder }
+                    placeholder={ this.props.placeholder }
                     onChange={ this.handleTextInputChange }
                     onFocus={ this.handleTextInputFocus }
                     onBlur={ this.handleTextInputBlur }
@@ -465,13 +424,13 @@ export default class Combobox extends React.Component {
             return;
         }
 
-        if ( this.indexOfFieldsToSort >= 0 ) {
+        if ( this.props.indexOfFieldsToSort >= 0 ) {
 
             this.sortByIndexOfFields( {
 
                 baseItems: this.state.baseItemsFiltered,
-                fields: this.fields,
-                index: this.indexOfFieldsToSort
+                fields: this.props.fields,
+                index: this.props.indexOfFieldsToSort
             } );
         }
 
@@ -518,7 +477,7 @@ export default class Combobox extends React.Component {
 
         return (
 
-            <div id={ this.domElementId } 
+            <div id={ this.props.domElementId } 
                  className="combobox" 
                  ref={ elem => { this.domElement = elem; } } 
             >
@@ -529,6 +488,28 @@ export default class Combobox extends React.Component {
         );
     }
 }
+
+Combobox.defaultProps = {
+
+    id: generateRandomString(),
+    items: [],
+    fields: [],
+    domElementId: undefined,
+    textInputElementId: undefined,
+    textInputElementName: undefined,
+    iconStyle: '',
+    placeholder: '',
+    indexOfFieldsToSort: -1,
+    shouldRenderCount: false,
+    shouldRenderIcon: false,
+    shouldRenderListOnFocus: true,
+    strikes: 1,
+    onSelect: new Function(),
+    onIconClick: new Function(),
+    onChange: new Function(),
+    onFocus: new Function(),
+    onBlur: new Function()
+};
 
 export {
 
