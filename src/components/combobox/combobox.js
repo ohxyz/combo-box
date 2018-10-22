@@ -6,10 +6,7 @@ import { generateRandomString,
          setDefault, 
          isDescendant,
          isUndefinedStringNumberBooleanOrNull
-} from '../../helpers/util.js';
-
-const DEFAULT_NUMBER_OF_STRIKES = 1;
-const DEFAULT_COMPONENT_ID = generateRandomString();
+       } from '../../helpers/util.js';
 
 export default class Combobox extends React.Component {
 
@@ -71,7 +68,8 @@ export default class Combobox extends React.Component {
         this.setState( { 
 
             baseItemsFiltered: [],
-            shouldRenderList: false
+            shouldRenderList: false,
+            indexOfItemFocused: -1,
         } );
     }
 
@@ -493,7 +491,7 @@ export default class Combobox extends React.Component {
 
 Combobox.defaultProps = {
 
-    id: DEFAULT_COMPONENT_ID,
+    id: generateRandomString(),
     items: [],
     fields: [],
     domElementId: undefined,
@@ -505,7 +503,7 @@ Combobox.defaultProps = {
     shouldRenderCount: false,
     shouldRenderIcon: false,
     shouldRenderListOnFocus: true,
-    strikes: DEFAULT_NUMBER_OF_STRIKES,
+    strikes: 1,
     onSelect: new Function(),
     onIconClick: new Function(),
     onChange: new Function(),
