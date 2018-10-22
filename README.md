@@ -1,4 +1,5 @@
 # Quick start
+
 ```
 <Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } 
           onSelect={ item => console.log( item.toString() ) } 
@@ -6,6 +7,7 @@
 ```
 
 # More
+
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -43,6 +45,6 @@ ReactDOM.render(
         onFocus={ combobox => console.log( combobox ) }
         onBlur={ combobox => console.log( combobox ) }
     />,
-    document.getElementById( 'container-2' )
+    document.getElementById( 'container' )
 );
 ```
