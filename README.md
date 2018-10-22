@@ -15,7 +15,6 @@ import { Combobox } from '@ohxyz/combobox';
 import '@ohxyz/combobox/style/default.css';
 
 const users = [
-
     { name: 'abc' },
     { name: 'bcd man', org: 'cde corp' },
     { org: 'bcd org' },
