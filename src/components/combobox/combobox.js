@@ -1,5 +1,5 @@
 import React from 'react';
-import ComboboxList from './combobox-list.js';
+import ComboboxListItem from './combobox-list-item.js';
 import { componentManager } from '../core/component-manager.js';
 import { BaseItem, makeBaseItems } from './data-model.js';
 import { generateRandomString, 
@@ -25,11 +25,18 @@ export default class Combobox extends React.Component {
         this.handleTextInputBlur = this.handleTextInputBlur.bind( this );
         this.handleListItemFocus = this.handleListItemFocus.bind( this );
         this.handleKeyDown = this.handleKeyDown.bind( this );
+        this.handleItemNavigation = this.handleItemNavigation.bind( this );
+        this.renderList = this.renderList.bind( this );
 
         this.textInputElement = null;
         this.textInputElementId = setDefault( props.inputId, undefined );
         this.textInputElementName = setDefault( props.inputName, undefined );
         this.text = '';
+        this.listElement = null;
+
+        // https://github.com/facebook/react/issues/9328
+        this.listItemRef = React.createRef();
+        this.listItemHeight = 0;
 
         this.items = setDefault( props.items, [] );
         this.fields = setDefault( props.fields, [] );
@@ -65,6 +72,7 @@ export default class Combobox extends React.Component {
         this.state = {
 
             baseItemsFiltered: [],
+            indexOfItemFocused: -1,
             shouldRenderList: false,
             shouldRenderCount: setDefault( props.shouldRenderCount, false ),
             shouldRenderIcon: setDefault( props.shouldRenderIcon, false )
@@ -297,11 +305,56 @@ export default class Combobox extends React.Component {
             return;
         }
 
+        this.handleItemNavigation( event );
+
         if ( event.key === 'Enter'
                 && ( this.itemFocused instanceof BaseItem ) === true ) {
 
             this.handleSelect( this.itemFocused );
         }
+
+    }
+
+    handleItemNavigation( event ) {
+
+        if ( this.state.shouldRenderList === false ) {
+
+            return;
+        }
+
+        let countOfItems = this.state.baseItemsFiltered.length;
+        let indexOfItemFocused = this.state.indexOfItemFocused;
+
+        if ( event.key === 'ArrowDown' ) {
+
+            if ( indexOfItemFocused < countOfItems - 1 ) {
+
+                indexOfItemFocused ++;
+            }
+
+        }
+        else if ( event.key === 'ArrowUp' ) {
+
+            if ( indexOfItemFocused > 0 ) {
+
+                indexOfItemFocused --;
+            }
+
+        }
+        else {
+
+            return;
+        }
+
+        this.itemFocused = this.state.baseItemsFiltered[ indexOfItemFocused ];
+        this.textInputElement.value = this.itemFocused.toString();
+
+        this.setState( {
+
+            indexOfItemFocused: indexOfItemFocused
+        } );
+
+        this.syncScrollBar( indexOfItemFocused );
     }
 
     handleListItemFocus( item ) {
@@ -313,6 +366,20 @@ export default class Combobox extends React.Component {
 
         this.itemFocused = item;
         this.textInputElement.value = item.__string__;
+    }
+
+    syncScrollBar( indexOfItem ) {
+
+        // Also need to check `current` that could be a possible bug in React
+        if ( this.listItemRef === null || this.listItemRef.current === null ) {
+
+            return;
+        }
+
+        let style = window.getComputedStyle( this.listItemRef.current.domElement );
+
+        this.listItemHeight = parseInt( style.height, 10 );
+        this.listElement.scrollTop = indexOfItem * this.listItemHeight;
     }
 
     componentDidMount() {
@@ -401,19 +468,44 @@ export default class Combobox extends React.Component {
                 baseItems: this.state.baseItemsFiltered,
                 fields: this.fields,
                 index: this.indexOfFieldsToSort
-
             } );
         }
 
         return (
 
             <div className="combobox__content">
-                <ComboboxList
-                    items={ this.state.baseItemsFiltered }
-                    onSelect={ this.handleSelect }
-                    onListItemFocus={ this.handleListItemFocus }
-                    ref={ elem => { this.comboboxListElement = elem; } }
-                />
+                { this.renderList() }
+            </div>
+        );
+    }
+
+    renderList() {
+
+        return (
+            
+            <div className="combobox__list" ref={ elem => { this.listElement = elem; } } >
+            {
+                this.state.baseItemsFiltered.map( ( item, key ) => {
+
+                    let isFocused = false;
+
+                    if ( key === this.state.indexOfItemFocused ) {
+
+                        isFocused = true;
+                    }
+
+                    return (
+
+                        <ComboboxListItem
+                            key={ key }
+                            item={ item }
+                            isFocused={ isFocused }
+                            onSelect={ this.onPropsSelect }
+                            ref={ this.listItemRef }
+                        />
+                    );
+                } )
+            }
             </div>
         );
     }
@@ -423,8 +515,8 @@ export default class Combobox extends React.Component {
         return (
 
             <div id={ this.domElementId } 
-                className="combobox" 
-                ref={ elem => { this.domElement = elem; } } 
+                 className="combobox" 
+                 ref={ elem => { this.domElement = elem; } } 
             >
                 { this.renderCount() }
                 { this.renderHeader() }

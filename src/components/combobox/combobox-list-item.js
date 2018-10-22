@@ -28,7 +28,10 @@ export default class ComboboxListItem extends React.Component {
 
         return (
 
-            <div className={ className } onClick={ this.handleClick } ref={ elem => this.domElement = elem }>
+            <div className={ className } 
+                 onClick={ this.handleClick } 
+                 ref={ elem => this.domElement = elem }
+            >
                 { content }
             </div>
         )
