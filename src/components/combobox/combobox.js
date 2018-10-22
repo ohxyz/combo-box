@@ -1,8 +1,13 @@
 import React from 'react';
 import ComboboxList from './combobox-list.js';
 import { componentManager } from '../core/component-manager.js';
-import { generateRandomString, setDefault, isDescendant } from '../../helpers/util.js';
 import { BaseItem, makeBaseItems } from './data-model.js';
+import { generateRandomString, 
+         setDefault, 
+         isDescendant,
+         isUndefinedStringNumberBooleanOrNull
+} from '../../helpers/util.js';
+
 
 const DEFAULT_NUMBER_OF_STRIKES = 1;
 
@@ -173,7 +178,7 @@ export default class Combobox extends React.Component {
         for ( let i = 0; i < baseItems.length; i ++ ) {
 
             let baseItem = baseItems[ i ];
-            let content = baseItem.__content__.toLowerCase();
+            let content = baseItem.__string__.toLowerCase();
 
             if ( content.indexOf( text.toLowerCase() ) >= 0 ) {
 
@@ -223,9 +228,9 @@ export default class Combobox extends React.Component {
 
     handleSelect( item ) {
 
-        this.textInputElement.value = item.__content__;
-        this.textInputElement.dataset.text = item.__content__;
-        let baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, item.__content__ );
+        this.textInputElement.value = item.__string__;
+        this.textInputElement.dataset.text = item.__string__;
+        let baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, item.__string__ );
 
         this.setState( {
 
@@ -233,7 +238,14 @@ export default class Combobox extends React.Component {
             shouldRenderList: false,
         } );
 
-        this.onPropsSelect( item, this );
+        if ( isUndefinedStringNumberBooleanOrNull( item.__origin__ ) === true ) {
+
+            this.onPropsSelect( item.__origin__, this );
+        }
+        else {
+
+            this.onPropsSelect( item, this );
+        }
     }
 
     clearSearch() {
@@ -300,7 +312,7 @@ export default class Combobox extends React.Component {
         }
 
         this.itemFocused = item;
-        this.textInputElement.value = item.__content__;
+        this.textInputElement.value = item.__string__;
     }
 
     componentDidMount() {

@@ -6,7 +6,7 @@ require( '../../../../less/components/combobox.less' );
 
 ReactDOM.render(
     <Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } 
-              onSelect={ item => console.log( item.toString() ) } 
+              onSelect={ item => console.log( item ) } 
     />,
     document.getElementById( 'container-1' )
 );

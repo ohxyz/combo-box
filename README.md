@@ -1,9 +1,7 @@
 # Quick start
 
 ```
-<Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } 
-          onSelect={ item => console.log( item.toString() ) } 
-/>
+<Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } onSelect={ item => console.log( item ) } />
 ```
 
 # More

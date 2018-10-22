@@ -6,7 +6,7 @@ class BaseItem {
 
     constructor( arg, fields ) {
 
-        this.__content__ = '';
+        this.__string__ = '';
         this.__fields__ = [];
         this.__origin__ = arg;
 
@@ -21,11 +21,11 @@ class BaseItem {
                 || type === 'number'
                 || type === 'boolean') {
 
-            this.__content__ = arg.toString();
+            this.__string__ = arg.toString();
         }
         else if ( arg === null ) {
 
-            this.__content__ = '';
+            this.__string__ = '';
         }
         else if ( util.isObject( arg ) === true || arg instanceof BaseItem === true ) {
 
@@ -40,12 +40,12 @@ class BaseItem {
                         contents.push( arg[ argProp ].toString() );
                     }
 
-                    this.__content__ = contents.join( ', ' );
+                    this.__string__ = contents.join( ', ' );
                 }
             }
             else {
 
-                this.__content__ = JSON.stringify( arg );
+                this.__string__ = JSON.stringify( arg );
             }
 
             Object.assign( this, arg );
@@ -54,7 +54,7 @@ class BaseItem {
 
     toString() {
 
-        return this.__content__;
+        return this.__string__;
     }
 }
 
