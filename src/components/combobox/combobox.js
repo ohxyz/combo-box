@@ -59,8 +59,8 @@ export default class Combobox extends React.Component {
 
         this.state = {
 
-            itemsFiltered: [],
-            shouldRenderList: setDefault( props.shouldRenderList, false ),
+            baseItemsFiltered: [],
+            shouldRenderList: false,
             shouldRenderCount: setDefault( props.shouldRenderCount, false ),
             shouldRenderIcon: setDefault( props.shouldRenderIcon, false )
         };
@@ -82,11 +82,11 @@ export default class Combobox extends React.Component {
         this.items = items;
         this.baseItems = makeBaseItems( items, fieldArray );
 
-        let itemsFiltered = this.filterBaseItemsByText( baseItems, text );
+        let baseItemsFiltered = this.filterBaseItemsByText( baseItems, text );
 
         this.setState( { 
 
-            itemsFiltered: itemsFiltered
+            baseItemsFiltered: baseItemsFiltered
         } );
     }
 
@@ -96,7 +96,7 @@ export default class Combobox extends React.Component {
 
             this.setState( { 
 
-                itemsFiltered: items,
+                baseItemsFiltered: items,
                 shouldRenderList: true
             } );
         }
@@ -106,7 +106,7 @@ export default class Combobox extends React.Component {
 
         this.setState( { 
 
-            itemsFiltered: [],
+            baseItemsFiltered: [],
             shouldRenderList: false
         } );
     }
@@ -116,7 +116,7 @@ export default class Combobox extends React.Component {
         this.itemFocused = null;
 
         let text = event.target.value;
-        let itemsFiltered = [];
+        let baseItemsFiltered = [];
 
         this.text = text;
 
@@ -126,11 +126,11 @@ export default class Combobox extends React.Component {
         }
         else { 
 
-            itemsFiltered = this.filterBaseItemsByText( this.baseItems, text );
+            baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, text );
 
-            if ( itemsFiltered.length > 0 ) {
+            if ( baseItemsFiltered.length > 0 ) {
 
-                this.showComboboxList( itemsFiltered );
+                this.showComboboxList( baseItemsFiltered );
             }
             else { 
 
@@ -149,7 +149,7 @@ export default class Combobox extends React.Component {
 
             this.showAllItems();
         }
-        else if ( this.state.itemsFiltered.length > 0 ) {
+        else if ( this.state.baseItemsFiltered.length > 0 ) {
 
             this.setState( {
 
@@ -168,7 +168,7 @@ export default class Combobox extends React.Component {
 
     filterBaseItemsByText( baseItems, text ) {
 
-        let itemsFiltered = [];
+        let baseItemsFiltered = [];
 
         for ( let i = 0; i < baseItems.length; i ++ ) {
 
@@ -177,15 +177,17 @@ export default class Combobox extends React.Component {
 
             if ( content.indexOf( text.toLowerCase() ) >= 0 ) {
 
-                itemsFiltered.push( baseItem );
+                baseItemsFiltered.push( baseItem );
             }
         }
 
-        return itemsFiltered;
+        return baseItemsFiltered;
     }
 
-    sortByIndexOfFields( { items, fields, index } ) {
+    sortByIndexOfFields( { baseItems, fields, index } ) {
 
+        // To make undefined value to the bottom of list
+        const BIG_COMPARATOR = '\uFFFF';
         let indexOfFields = parseInt( index, 10 );
 
         if ( Array.isArray( fields ) === true 
@@ -193,25 +195,26 @@ export default class Combobox extends React.Component {
 
             let fieldName = fields[ indexOfFields ];
 
-            items.sort( ( a, b ) => {
+            baseItems.sort( ( a, b ) => {
 
-                if ( a instanceof BaseItem === true 
-                        && b instanceof BaseItem === true ) {
+                if ( a.__origin__[ fieldName ] === undefined 
+                        && b.__origin__[ fieldName ] !== undefined ) {
 
-                    return a.__content__.localeCompare( b.__content__ );
+                    return BIG_COMPARATOR.localeCompare( b.__origin__[ fieldName ] );
                 }
-                else if ( typeof a !== 'object' || typeof b !== 'object' ) {
+                else if ( a.__origin__[ fieldName ] !== undefined 
+                            && b.__origin__[ fieldName ] === undefined ) {
 
-                    return false;
+                    return a.__origin__[ fieldName ].localeCompare( BIG_COMPARATOR );
                 }
-                else if ( a.hasOwnProperty( fieldName ) === false 
-                            || b.hasOwnProperty( fieldName ) === false ) {
+                else if ( a.__origin__[ fieldName ] !== undefined
+                            && b.__origin__[ fieldName ] !== undefined ) {
 
-                    return false;
+                    return a.__origin__[ fieldName ].localeCompare( b.__origin__[ fieldName ] );
                 }
                 else {
 
-                    return a[ fieldName ].localeCompare( b[ fieldName ] );
+                    return false;
                 }
 
             } );
@@ -222,11 +225,11 @@ export default class Combobox extends React.Component {
 
         this.textInputElement.value = item.__content__;
         this.textInputElement.dataset.text = item.__content__;
-        let itemsFiltered = this.filterBaseItemsByText( this.baseItems, item.__content__ );
+        let baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, item.__content__ );
 
         this.setState( {
 
-            itemsFiltered: itemsFiltered,
+            baseItemsFiltered: baseItemsFiltered,
             shouldRenderList: false,
         } );
 
@@ -245,7 +248,7 @@ export default class Combobox extends React.Component {
 
         this.setState( {
 
-            itemsFiltered: this.baseItems,
+            baseItemsFiltered: this.baseItems,
             shouldRenderList: true
         } );
     }
@@ -254,7 +257,7 @@ export default class Combobox extends React.Component {
 
         this.setState( {
 
-            itemsFiltered: this.baseItems,
+            baseItemsFiltered: this.baseItems,
             shouldRenderList: !this.state.shouldRenderList
         } );
     }
@@ -319,7 +322,7 @@ export default class Combobox extends React.Component {
             return;
         }
 
-        let count = this.state.itemsFiltered.length;
+        let count = this.state.baseItemsFiltered.length;
 
         return (
 
@@ -374,24 +377,27 @@ export default class Combobox extends React.Component {
     renderContent() {
 
         if ( this.state.shouldRenderList === false 
-                || this.state.itemsFiltered.length === 0 ) {
+                || this.state.baseItemsFiltered.length === 0 ) {
 
             return;
         }
 
-        this.sortByIndexOfFields( {
+        if ( this.indexOfFieldsToSort >= 0 ) {
 
-            items: this.state.itemsFiltered,
-            fields: this.fields,
-            index: this.indexOfFieldsToSort
+            this.sortByIndexOfFields( {
 
-        } );
+                baseItems: this.state.baseItemsFiltered,
+                fields: this.fields,
+                index: this.indexOfFieldsToSort
+
+            } );
+        }
 
         return (
 
             <div className="combobox__content">
                 <ComboboxList
-                    items={ this.state.itemsFiltered }
+                    items={ this.state.baseItemsFiltered }
                     onSelect={ this.handleSelect }
                     onListItemFocus={ this.handleListItemFocus }
                     ref={ elem => { this.comboboxListElement = elem; } }

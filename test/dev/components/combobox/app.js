@@ -8,17 +8,19 @@ ReactDOM.render(
     <Combobox items={ [ 'abc', 'abd', 'bcd', 'cde', 'bde' ] } 
               onSelect={ item => console.log( item.toString() ) } 
     />,
-    document.getElementById( 'container' )
+    document.getElementById( 'container-1' )
 );
 
 const users = [
 
-    { 'org': 'abcde org' },
-    { 'org': 'abcd org', name: 'abc' },
-    { 'org': 'abce corp', name: 'bcd man' },
-    { 'name': 'Mr abcd ' },
-    { 'name': 'Ms cde', 'org': 'abce corp' },
-    { 'other': 'na' }
+    { name: 'abc' },
+    { name: 'bcd man', org: 'cde corp' },
+    { org: 'bcd org' },
+    { name: 'abc', org: 'bcd org' },
+    { name: 'Mr abc' },
+    { org: 'abc org' },
+    { name: 'Ms abc', org: 'abce corp' },
+    { others: 'na' }
 ];
 
 ReactDOM.render(
@@ -30,7 +32,7 @@ ReactDOM.render(
         inputId="my-combobox__input-id"
         inputName="my-combobox__input-name"
         placeholder="Search..."
-        strikes="2"
+        strikes={ 2 }
         shouldRenderCount={ true }
         shouldRenderListOnFocus={ false }
         shouldRenderIcon={ true }
