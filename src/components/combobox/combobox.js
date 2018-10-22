@@ -212,14 +212,6 @@ export default class Combobox extends React.Component {
         }
     }
 
-    clearSearch() {
-
-        this.textInputElement.value = '';
-        this.textInputElement.dataset.text = '';
-
-        this.clearComboboxList();
-    }
-
     showAllItems() {
 
         this.setState( {
@@ -341,7 +333,7 @@ export default class Combobox extends React.Component {
     shouldComponentUpdate( nextProps, nextState ) {
 
         if ( this.props.items !== nextProps.items || this.props.fields !== nextProps.fields ) {
-            
+
             this.comboboxItems = makeComboboxItems( nextProps.items, nextProps.fields );
         }
 
@@ -445,6 +437,20 @@ export default class Combobox extends React.Component {
         );
     }
 
+    renderListItem( { key, comboboxItem, isFocused } ) {
+
+        return ( 
+
+            <ComboboxListItem
+                key={ key }
+                item={ comboboxItem }
+                isFocused={ isFocused }
+                onSelect={ this.handleSelect }
+                ref={ this.listItemRef }
+            />
+        );
+    }
+
     renderList() {
 
         return (
@@ -460,16 +466,11 @@ export default class Combobox extends React.Component {
                         isFocused = true;
                     }
 
-                    return (
-
-                        <ComboboxListItem
-                            key={ key }
-                            item={ item }
-                            isFocused={ isFocused }
-                            onSelect={ this.handleSelect }
-                            ref={ this.listItemRef }
-                        />
-                    );
+                    return this.renderListItem( {
+                        key: key,
+                        comboboxItem: item,
+                        isFocused: isFocused
+                    } );
                 } )
             }
             </div>
