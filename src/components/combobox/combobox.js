@@ -1,12 +1,12 @@
 import React from 'react';
 import ComboboxListItem from './combobox-list-item.js';
 import { componentManager } from '../core/component-manager.js';
-import { BaseItem, makeBaseItems } from './data-model.js';
+import { ComboboxItem, makeComboboxItems } from './data-model.js';
 import { generateRandomString, 
          setDefault, 
          isDescendant,
          isUndefinedStringNumberBooleanOrNull
-       } from '../../helpers/util.js';
+} from '../../helpers/util.js';
 
 export default class Combobox extends React.Component {
 
@@ -33,7 +33,7 @@ export default class Combobox extends React.Component {
         this.listItemRef = React.createRef();
         this.listItemHeight = 0;
 
-        this.baseItems = makeBaseItems( props.items, props.fields );
+        this.comboboxItems = makeComboboxItems( props.items, props.fields );
         
         this.comboBoxListElement = null;
         this.domElement = null;
@@ -43,7 +43,7 @@ export default class Combobox extends React.Component {
 
         this.state = {
 
-            baseItemsFiltered: [],
+            comboboxItemsFiltered: [],
             indexOfItemFocused: -1,
             shouldRenderList: false
         };
@@ -51,13 +51,13 @@ export default class Combobox extends React.Component {
         componentManager.addComponent( this.props.id, this );
     }
 
-    showComboboxList( items ) {
+    showComboboxList( comboboxItems ) {
 
-        if ( Array.isArray( items ) === true && items.length > 0 ) {
+        if ( Array.isArray( comboboxItems ) === true && comboboxItems.length > 0 ) {
 
             this.setState( { 
 
-                baseItemsFiltered: items,
+                comboboxItemsFiltered: comboboxItems,
                 shouldRenderList: true
             } );
         }
@@ -67,7 +67,7 @@ export default class Combobox extends React.Component {
 
         this.setState( { 
 
-            baseItemsFiltered: [],
+            comboboxItemsFiltered: [],
             shouldRenderList: false,
             indexOfItemFocused: -1,
         } );
@@ -78,7 +78,7 @@ export default class Combobox extends React.Component {
         this.itemFocused = null;
 
         let text = event.target.value;
-        let baseItemsFiltered = [];
+        let comboboxItemsFiltered = [];
 
         this.text = text;
 
@@ -95,11 +95,11 @@ export default class Combobox extends React.Component {
         }
         else { 
 
-            baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, text );
+            comboboxItemsFiltered = this.filterComboboxItemsByText( this.comboboxItems, text );
 
-            if ( baseItemsFiltered.length > 0 ) {
+            if ( comboboxItemsFiltered.length > 0 ) {
 
-                this.showComboboxList( baseItemsFiltered );
+                this.showComboboxList( comboboxItemsFiltered );
             }
             else { 
 
@@ -118,7 +118,7 @@ export default class Combobox extends React.Component {
 
             this.showAllItems();
         }
-        else if ( this.state.baseItemsFiltered.length > 0 ) {
+        else if ( this.state.comboboxItemsFiltered.length > 0 ) {
 
             this.setState( {
 
@@ -135,25 +135,25 @@ export default class Combobox extends React.Component {
         this.props.onBlur( this );
     }
 
-    filterBaseItemsByText( baseItems, text ) {
+    filterComboboxItemsByText( comboboxItems, text ) {
 
-        let baseItemsFiltered = [];
+        let comboboxItemsFiltered = [];
 
-        for ( let i = 0; i < baseItems.length; i ++ ) {
+        for ( let i = 0; i < comboboxItems.length; i ++ ) {
 
-            let baseItem = baseItems[ i ];
-            let content = baseItem.__string__.toLowerCase();
+            let comboboxItem = comboboxItems[ i ];
+            let content = comboboxItem.__string__.toLowerCase();
 
             if ( content.indexOf( text.toLowerCase() ) >= 0 ) {
 
-                baseItemsFiltered.push( baseItem );
+                comboboxItemsFiltered.push( comboboxItem );
             }
         }
 
-        return baseItemsFiltered;
+        return comboboxItemsFiltered;
     }
 
-    sortByIndexOfFields( { baseItems, fields, index } ) {
+    sortByIndexOfFields( { comboboxItems, fields, index } ) {
 
         // To make undefined value to the bottom of list
         const BIG_COMPARATOR = '\uFFFF';
@@ -164,7 +164,7 @@ export default class Combobox extends React.Component {
 
             let fieldName = fields[ indexOfFields ];
 
-            baseItems.sort( ( a, b ) => {
+            comboboxItems.sort( ( a, b ) => {
 
                 if ( a.__origin__[ fieldName ] === undefined 
                         && b.__origin__[ fieldName ] !== undefined ) {
@@ -190,25 +190,25 @@ export default class Combobox extends React.Component {
         }
     }
 
-    handleSelect( baseItem ) {
+    handleSelect( comboboxItem ) {
 
-        this.textInputElement.value = baseItem.__string__;
-        this.textInputElement.dataset.text = baseItem.__string__;
-        let baseItemsFiltered = this.filterBaseItemsByText( this.baseItems, baseItem.__string__ );
+        this.textInputElement.value = comboboxItem.__string__;
+        this.textInputElement.dataset.text = comboboxItem.__string__;
+        let comboboxItemsFiltered = this.filterComboboxItemsByText( this.comboboxItems, comboboxItem.__string__ );
 
         this.setState( {
 
-            baseItemsFiltered: baseItemsFiltered,
+            comboboxItemsFiltered: comboboxItemsFiltered,
             shouldRenderList: false,
         } );
 
-        if ( isUndefinedStringNumberBooleanOrNull( baseItem.__origin__ ) === true ) {
+        if ( isUndefinedStringNumberBooleanOrNull( comboboxItem.__origin__ ) === true ) {
 
-            this.props.onSelect( baseItem.__origin__, this );
+            this.props.onSelect( comboboxItem.__origin__, this );
         }
         else {
 
-            this.props.onSelect( baseItem, this );
+            this.props.onSelect( comboboxItem, this );
         }
     }
 
@@ -224,7 +224,7 @@ export default class Combobox extends React.Component {
 
         this.setState( {
 
-            baseItemsFiltered: this.baseItems,
+            comboboxItemsFiltered: this.comboboxItems,
             shouldRenderList: true
         } );
     }
@@ -233,7 +233,7 @@ export default class Combobox extends React.Component {
 
         this.setState( {
 
-            baseItemsFiltered: this.baseItems,
+            comboboxItemsFiltered: this.comboboxItems,
             shouldRenderList: !this.state.shouldRenderList
         } );
     }
@@ -264,7 +264,7 @@ export default class Combobox extends React.Component {
         this.handleItemNavigation( event );
 
         if ( event.key === 'Enter'
-                && ( this.itemFocused instanceof BaseItem ) === true ) {
+                && ( this.itemFocused instanceof ComboboxItem ) === true ) {
 
             this.handleSelect( this.itemFocused );
         }
@@ -278,7 +278,7 @@ export default class Combobox extends React.Component {
             return;
         }
 
-        let countOfItems = this.state.baseItemsFiltered.length;
+        let countOfItems = this.state.comboboxItemsFiltered.length;
         let indexOfItemFocused = this.state.indexOfItemFocused;
 
         if ( event.key === 'ArrowDown' ) {
@@ -302,7 +302,7 @@ export default class Combobox extends React.Component {
             return;
         }
 
-        this.itemFocused = this.state.baseItemsFiltered[ indexOfItemFocused ];
+        this.itemFocused = this.state.comboboxItemsFiltered[ indexOfItemFocused ];
         this.textInputElement.value = this.itemFocused.toString();
 
         this.setState( {
@@ -315,7 +315,7 @@ export default class Combobox extends React.Component {
 
     handleListItemFocus( item ) {
 
-        if ( item instanceof BaseItem === false ) {
+        if ( item instanceof ComboboxItem === false ) {
 
             return;
         }
@@ -340,7 +340,10 @@ export default class Combobox extends React.Component {
 
     shouldComponentUpdate( nextProps, nextState ) {
 
-        this.baseItems = makeBaseItems( nextProps.items, nextProps.fields );
+        if ( this.props.items !== nextProps.items || this.props.fields !== nextProps.fields ) {
+            
+            this.comboboxItems = makeComboboxItems( nextProps.items, nextProps.fields );
+        }
 
         return true;
     }
@@ -364,7 +367,7 @@ export default class Combobox extends React.Component {
             return;
         }
 
-        let count = this.state.baseItemsFiltered.length;
+        let count = this.state.comboboxItemsFiltered.length;
 
         return (
 
@@ -419,7 +422,7 @@ export default class Combobox extends React.Component {
     renderContent() {
 
         if ( this.state.shouldRenderList === false 
-                || this.state.baseItemsFiltered.length === 0 ) {
+                || this.state.comboboxItemsFiltered.length === 0 ) {
 
             return;
         }
@@ -428,7 +431,7 @@ export default class Combobox extends React.Component {
 
             this.sortByIndexOfFields( {
 
-                baseItems: this.state.baseItemsFiltered,
+                comboboxItems: this.state.comboboxItemsFiltered,
                 fields: this.props.fields,
                 index: this.props.indexOfFieldsToSort
             } );
@@ -448,7 +451,7 @@ export default class Combobox extends React.Component {
             
             <div className="combobox__list" ref={ elem => { this.listElement = elem; } } >
             {
-                this.state.baseItemsFiltered.map( ( item, key ) => {
+                this.state.comboboxItemsFiltered.map( ( item, key ) => {
 
                     let isFocused = false;
 

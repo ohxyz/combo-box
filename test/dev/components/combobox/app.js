@@ -13,10 +13,10 @@ ReactDOM.render(
 
 const users = [
 
-    { name: 'abc' },
+    { name: 'abc', age: 10 },
     { name: 'bcd man', org: 'cde corp' },
     { org: 'bcd org' },
-    { name: 'abc', org: 'bcd org' },
+    { name: 'abc', org: 'bcd org', sex: 'male' },
     { name: 'Mr abc' },
     { org: 'abc org' },
     { name: 'Ms abc', org: 'abce corp' },

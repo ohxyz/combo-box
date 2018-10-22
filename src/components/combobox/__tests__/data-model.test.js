@@ -1,18 +1,18 @@
 const module = require( '../data-model.js' );
 
-describe( 'BaseItem object', () => {
+describe( 'ComboboxItem object', () => {
 
-    let BaseItem = module.BaseItem;
+    let ComboboxItem = module.ComboboxItem;
 
     test( 'can accept an empty argument', () => {
 
-        expect( new BaseItem() ).toEqual( { __origin__: undefined, __content__: '', __field__: '' } );
+        expect( new ComboboxItem() ).toEqual( { __origin__: undefined, __content__: '', __field__: '' } );
     } );
 
     
 } );
 
-describe( 'makeBaseItemsByItems function', () => { 
+describe( 'makeComboboxItemsByItems function', () => { 
 
     let items = [
 
@@ -21,18 +21,18 @@ describe( 'makeBaseItemsByItems function', () => {
         { name: 'c' }
     ];
 
-    let fn = module.makeBaseItemsByItems;
+    let fn = module.makeComboboxItemsByItems;
 
-    test( 'should have 3 BaseItems', () => { 
+    test( 'should have 3 ComboboxItems', () => { 
 
         expect( fn( items ).length ).toBe( 3 );
 
     } );
 } );
 
-describe( 'makeBaseItemsByFields function', () => {
+describe( 'makeComboboxItemsByFields function', () => {
 
-    let fn = module.makeBaseItemsByFields;
+    let fn = module.makeComboboxItemsByFields;
     let items = [
 
         { first: 'name',  next: 'address',  last: 'number'  },
