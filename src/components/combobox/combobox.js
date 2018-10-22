@@ -217,7 +217,8 @@ export default class Combobox extends React.Component {
         this.setState( {
 
             comboboxItemsFiltered: this.comboboxItems,
-            shouldRenderList: true
+            shouldRenderList: true,
+            indexOfItemFocused: -1
         } );
     }
 
@@ -226,7 +227,8 @@ export default class Combobox extends React.Component {
         this.setState( {
 
             comboboxItemsFiltered: this.comboboxItems,
-            shouldRenderList: !this.state.shouldRenderList
+            shouldRenderList: !this.state.shouldRenderList,
+            indexOfItemFocused: -1
         } );
     }
 
