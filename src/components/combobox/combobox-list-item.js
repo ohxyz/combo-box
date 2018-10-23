@@ -9,6 +9,7 @@ export default class ComboboxListItem extends React.Component {
         this.handleClick = this.handleClick.bind( this );
 
         this.domElement = null;
+        this.wrapper = '<span class="combobox__word-matched">${0}</span>';
     }
 
     handleClick() {
@@ -19,7 +20,7 @@ export default class ComboboxListItem extends React.Component {
     render() {
 
         let item = this.props.item;
-        let content = item.__string__;
+        let content = item.wrap( this.props.wordMatched, this.wrapper );
         let isFocused = this.props.isFocused;
 
         let className = this.props.isFocused === true
@@ -31,10 +32,15 @@ export default class ComboboxListItem extends React.Component {
             <div className={ className } 
                  onClick={ this.handleClick } 
                  ref={ elem => this.domElement = elem }
+                 dangerouslySetInnerHTML={ { __html: content } }
             >
-                { content }
             </div>
         )
     }
 
 }
+
+ComboboxListItem.defaultProps = {
+
+    wordMatched: ''
+};

@@ -166,20 +166,23 @@ export default class Combobox extends React.Component {
 
             comboboxItems.sort( ( a, b ) => {
 
-                if ( a.__origin__[ fieldName ] === undefined 
-                        && b.__origin__[ fieldName ] !== undefined ) {
+                let ao = a.__origin__;
+                let bo = b.__origin__;
 
-                    return BIG_COMPARATOR.localeCompare( b.__origin__[ fieldName ] );
+                if ( ao[ fieldName ] === undefined 
+                        && bo[ fieldName ] !== undefined ) {
+
+                    return BIG_COMPARATOR.localeCompare( bo[ fieldName ].toString() );
                 }
-                else if ( a.__origin__[ fieldName ] !== undefined 
-                            && b.__origin__[ fieldName ] === undefined ) {
+                else if ( ao[ fieldName ] !== undefined 
+                            && bo[ fieldName ] === undefined ) {
 
-                    return a.__origin__[ fieldName ].localeCompare( BIG_COMPARATOR );
+                    return ao[ fieldName ].toString().localeCompare( BIG_COMPARATOR );
                 }
-                else if ( a.__origin__[ fieldName ] !== undefined
-                            && b.__origin__[ fieldName ] !== undefined ) {
+                else if ( ao[ fieldName ] !== undefined
+                            && bo[ fieldName ] !== undefined ) {
 
-                    return a.__origin__[ fieldName ].localeCompare( b.__origin__[ fieldName ] );
+                    return ao[ fieldName ].toString().localeCompare( bo[ fieldName ].toString() );
                 }
                 else {
 
@@ -194,7 +197,8 @@ export default class Combobox extends React.Component {
 
         this.textInputElement.value = comboboxItem.__string__;
         this.textInputElement.dataset.text = comboboxItem.__string__;
-        let comboboxItemsFiltered = this.filterComboboxItemsByText( this.comboboxItems, comboboxItem.__string__ );
+        let comboboxItemsFiltered 
+            = this.filterComboboxItemsByText( this.comboboxItems, comboboxItem.__string__ );
 
         this.setState( {
 
@@ -447,6 +451,7 @@ export default class Combobox extends React.Component {
                 key={ key }
                 item={ comboboxItem }
                 isFocused={ isFocused }
+                wordMatched={ this.text }
                 onSelect={ this.handleSelect }
                 ref={ this.listItemRef }
             />

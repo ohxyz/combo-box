@@ -1,13 +1,14 @@
 {
   "name": "@ohxyz/combobox",
   "version": "1.1.6",
-  "description": "A Combobox implemented in React",
+  "description": "A combo box implementation in React",
   "repository": "git@github.com:ohxyz/combobox.git",
   "scripts": {
     "dev": "webpack-dev-server --config webpack.dev.config.js --open --env.NODE_ENV=dev --env.COMPONENT=combobox",
     "babel": "rm -rf lib | babel ./src --out-dir ./lib --presets=react --ignore=__tests__",
     "less": "lessc ./less/components/combobox.less ./style/default.css",
-    "build": "npm run babel | npm run less"
+    "build": "npm run babel | npm run less",
+    "jest": "jest"
   },
   "main": "index.js",
   "author": "Ohxyz",
@@ -25,6 +26,7 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^1.0.0",
     "faker": "^4.1.0",
+    "jest": "^23.6.0",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "react": "^16.5.0",
