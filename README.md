@@ -14,26 +14,27 @@ import ReactDOM from 'react-dom';
 import { Combobox } from '@ohxyz/combobox';
 import '@ohxyz/combobox/style/default.css';
 
-const users = [
-    { name: 'abc' },
-    { name: 'bcd man', org: 'cde corp' },
-    { org: 'bcd org' },
-    { name: 'abc', org: 'bcd org' },
-    { name: 'Mr abc' },
-    { org: 'abc org' },
-    { name: 'Ms abc', org: 'abce corp' },
-    { others: 'na' }
+const persons = [
+    { height:  175,       name:    'Andrea'                    },
+    { height:  167,       name:    'Anthony',  sex:     'Male' },
+    { name:   'Annie',    sex:     'Female',   height:   180   },
+    { name:   'Campbell', height:   175                        },
+    { sex:    'Female',   name:    'Bennie',   height:   175   },
+    { name:   'Cameron',  height:   173,       sex:     'Male' },
+    { name:   'Benjamin', sex:     'Male',     height:   167   },
+    { name:   'Anna',     sex:     'Female',   height:   169   },
+    { name:   'Benson',   sex:     'Male'                      }
 ];
 
 ReactDOM.render(
     <Combobox
-        items={ users }
-        fields={ [ 'name', 'org' ] }
-        indexOfFieldsToSort={ 0 }
+        items={ persons }
+        fields={ [ 'name', 'height' ] }
+        indexOfFieldsToSort={ 1 }
         id="my-combobox"
         inputId="my-combobox__input-id"
         inputName="my-combobox__input-name"
-        placeholder="Search..."
+        placeholder="Search people..."
         strikes={ 2 }
         shouldRenderCount={ true }
         shouldRenderListOnFocus={ false }

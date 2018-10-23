@@ -11,7 +11,7 @@ ReactDOM.render(
     document.getElementById( 'container-1' )
 );
 
-const users = [
+const persons = [
     { height:  175,       name:    'Andrea'                    },
     { height:  167,       name:    'Anthony',  sex:     'Male' },
     { name:   'Annie',    sex:     'Female',   height:   180   },
@@ -25,7 +25,7 @@ const users = [
 
 ReactDOM.render(
     <Combobox
-        items={ users }
+        items={ persons }
         fields={ [ 'name', 'height' ] }
         indexOfFieldsToSort={ 1 }
         id="my-combobox"
