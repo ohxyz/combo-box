@@ -350,16 +350,11 @@ export default class Combobox extends React.Component {
     renderIcon() {
 
         return (
-            
-            <span className="combobox__icon" onClick={ this.handleIconClick }>
-                { this.renderIconStyle() }
+
+            <span className="combobox__icon" onClick={ this.handleIconClick } >
+                <span className="combobox__icon-style"></span>
             </span>
         );
-    }
-
-    renderIconStyle() {
-
-        return <span className="combobox__icon-style">{ this.props.iconStyle }</span>;
     }
 
     renderHeader() {
@@ -497,7 +492,6 @@ Combobox.defaultProps = {
     domElementId: undefined,
     textInputElementId: undefined,
     textInputElementName: undefined,
-    iconStyle: '',
     placeholder: '',
     indexOfFieldsToSort: -1,
     shouldRenderCount: false,
