@@ -336,11 +336,6 @@ export default class Combobox extends React.Component {
 
     renderCount() {
 
-        if ( this.props.shouldRenderCount === false ) {
-
-            return;
-        }
-
         let count = this.state.comboboxItemsFiltered.length;
 
         return (
@@ -354,12 +349,8 @@ export default class Combobox extends React.Component {
 
     renderIcon() {
 
-        if ( this.props.shouldRenderIcon === false ) {
-
-            return;
-        }
-
         return (
+            
             <span className="combobox__icon" onClick={ this.handleIconClick }>
                 { this.renderIconStyle() }
             </span>
@@ -388,7 +379,7 @@ export default class Combobox extends React.Component {
                     onBlur={ this.handleTextInputBlur }
                     ref={ elem => this.textInputElement = elem }
                 />
-                { this.renderIcon() }
+                { this.props.shouldRenderIcon && this.renderIcon() }
             </div>
         );
     }
@@ -490,7 +481,7 @@ export default class Combobox extends React.Component {
                  className="combobox" 
                  ref={ elem => { this.domElement = elem; } } 
             >
-                { this.renderCount() }
+                { this.props.shouldRenderCount && this.renderCount() }
                 { this.renderHeader() }
                 { this.renderContent() }
             </div>
