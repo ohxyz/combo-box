@@ -48,19 +48,6 @@ class ComboboxItem {
 
         return this.__string__;
     }
-
-    wrap( text, htmlMarkup ) {
-
-        if ( text === '' || text == undefined ) {
-
-            return this.__string__;
-        }
-
-        let regex = new RegExp( text, 'ig' );
-        let replaced = this.__string__.replace( regex, htmlMarkup ).replace( /\$\{[0]\}/ig, text );
-
-        return replaced;
-    }
 }
 
 function makeComboboxItemsByItems( items ) {
