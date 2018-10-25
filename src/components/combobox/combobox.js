@@ -443,7 +443,14 @@ export default class Combobox extends React.Component {
         );
     }
 
-    renderListItem( { key, comboboxItem, isFocused } ) {
+    renderListItem( comboboxItem, key ) {
+
+        let isFocused = false;
+
+        if ( key === this.state.indexOfItemFocused ) {
+
+            isFocused = true;
+        }
 
         return ( 
 
@@ -454,8 +461,25 @@ export default class Combobox extends React.Component {
                 wordMatched={ this.text }
                 onSelect={ this.handleSelect }
                 ref={ this.listItemRef }
-            />
+            >
+                { this.renderListItemContent( comboboxItem ) }
+            </ComboboxListItem>
         );
+    }
+
+    renderListItemContent( comboboxItem ) {
+
+        return <span>{ comboboxItem.height }</span>;
+    }
+
+    renderListItemFragment( comboboxItem, key ) {
+
+        return (
+
+            <React.Fragment key={ key } >
+                { this.renderListItem( comboboxItem ) }
+            </React.Fragment>
+        )
     }
 
     renderList() {
@@ -466,18 +490,13 @@ export default class Combobox extends React.Component {
             {
                 this.state.comboboxItemsFiltered.map( ( item, key ) => {
 
-                    let isFocused = false;
+                    // return this.renderListItem( {
+                    //     key: key,
+                    //     comboboxItem: item,
+                    //     isFocused: isFocused
+                    // } );
 
-                    if ( key === this.state.indexOfItemFocused ) {
-
-                        isFocused = true;
-                    }
-
-                    return this.renderListItem( {
-                        key: key,
-                        comboboxItem: item,
-                        isFocused: isFocused
-                    } );
+                    return this.renderListItem( item, key );
                 } )
             }
             </div>

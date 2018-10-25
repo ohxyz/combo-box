@@ -32,8 +32,9 @@ export default class ComboboxListItem extends React.Component {
             <div className={ className } 
                  onClick={ this.handleClick } 
                  ref={ elem => this.domElement = elem }
-                 dangerouslySetInnerHTML={ { __html: content } }
+                 // dangerouslySetInnerHTML={ { __html: content } }
             >
+                { this.props.children }
             </div>
         )
     }
