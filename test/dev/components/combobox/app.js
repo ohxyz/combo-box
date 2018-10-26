@@ -44,3 +44,21 @@ ReactDOM.render(
     />,
     document.getElementById( 'container-2' )
 );
+
+class MyCombobox extends Combobox {
+
+    renderItem( item ) {
+        return (
+            <div className="combobox__item">
+                <div>{ item.name }</div>
+                { item.sex && <div>{ { Male: 'Man', Female: 'Woman' }[ item.sex ] }</div> }
+                { item.height && <div>Height: { item.height }CM</div> }
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(
+    <MyCombobox items={ persons } />,
+    document.getElementById( 'container-3' )
+);
