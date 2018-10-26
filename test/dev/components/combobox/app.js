@@ -49,7 +49,7 @@ class MyCombobox extends Combobox {
 
     renderItem( item ) {
         return (
-            <div className="combobox-item">
+            <div className="combobox__item">
                 <div>{ item.name }</div>
                 { item.sex && <div>{ { Male: 'Man', Female: 'Woman' }[ item.sex ] }</div> }
                 { item.height && <div>Height: { item.height }CM</div> }
