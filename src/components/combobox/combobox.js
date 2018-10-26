@@ -1,9 +1,8 @@
 import React from 'react';
-import ComboboxListItem from './combobox-list-item.js';
 import { componentManager } from '../core/component-manager.js';
 import { ComboboxItem, makeComboboxItems } from './data-model.js';
-import { generateRandomString, 
-         setDefault, 
+import { generateRandomString,
+         replaceChars,
          isDescendant,
          isUndefinedStringNumberBooleanOrNull
 } from '../../helpers/util.js';
@@ -23,7 +22,6 @@ export default class Combobox extends React.Component {
         this.handleListItemFocus = this.handleListItemFocus.bind( this );
         this.handleKeyDown = this.handleKeyDown.bind( this );
         this.handleItemNavigation = this.handleItemNavigation.bind( this );
-        this.renderList = this.renderList.bind( this );
 
         this.textInputElement = null;
         this.text = '';
@@ -330,40 +328,13 @@ export default class Combobox extends React.Component {
             return;
         }
 
-        let style = window.getComputedStyle( this.listItemRef.current.domElement );
+        let style = window.getComputedStyle( this.listItemRef.current );
 
         this.listItemHeight = parseInt( style.height, 10 );
         this.listElement.scrollTop = indexOfItem * this.listItemHeight;
     }
 
-    shouldComponentUpdate( nextProps, nextState ) {
-
-        if ( this.props.items !== nextProps.items || this.props.fields !== nextProps.fields ) {
-
-            this.comboboxItems = makeComboboxItems( nextProps.items, nextProps.fields );
-        }
-
-        return true;
-    }
-
-    componentDidMount() {
-        
-        document.addEventListener( 'mouseup', this.handleClickOutside );
-        document.addEventListener( 'keydown', this.handleKeyDown );
-    }
-    
-    componentWillUnmount() {
-
-        document.removeEventListener( 'mouseup', this.handleClickOutside );
-        document.removeEventListener( 'keydown', this.handleKeyDown );
-    }
-
     renderCount() {
-
-        if ( this.props.shouldRenderCount === false ) {
-
-            return;
-        }
 
         let count = this.state.comboboxItemsFiltered.length;
 
@@ -378,21 +349,12 @@ export default class Combobox extends React.Component {
 
     renderIcon() {
 
-        if ( this.props.shouldRenderIcon === false ) {
-
-            return;
-        }
-
         return (
-            <span className="combobox__icon" onClick={ this.handleIconClick }>
-                { this.renderIconStyle() }
+
+            <span className="combobox__icon" onClick={ this.handleIconClick } >
+                <span className="combobox__icon-style"></span>
             </span>
         );
-    }
-
-    renderIconStyle() {
-
-        return <span className="combobox__icon-style">{ this.props.iconStyle }</span>;
     }
 
     renderHeader() {
@@ -412,7 +374,7 @@ export default class Combobox extends React.Component {
                     onBlur={ this.handleTextInputBlur }
                     ref={ elem => this.textInputElement = elem }
                 />
-                { this.renderIcon() }
+                { this.props.shouldRenderIcon && this.renderIcon() }
             </div>
         );
     }
@@ -443,19 +405,30 @@ export default class Combobox extends React.Component {
         );
     }
 
-    renderListItem( { key, comboboxItem, isFocused } ) {
+    renderListItem( comboboxItem, key ) {
 
-        return ( 
+        let className = ( key === this.state.indexOfItemFocused )
+              ? 'combobox__list-item combobox__list-item--focused'
+              : 'combobox__list-item';
 
-            <ComboboxListItem
-                key={ key }
-                item={ comboboxItem }
-                isFocused={ isFocused }
-                wordMatched={ this.text }
-                onSelect={ this.handleSelect }
-                ref={ this.listItemRef }
-            />
-        );
+        return (
+
+            <div key={ key }
+                 className={ className } 
+                 onClick={ () => { this.handleSelect( comboboxItem ) } } 
+                 ref={ this.listItemRef }
+            >
+                { this.renderItem( comboboxItem ) }
+            </div>
+        )
+    }
+
+    renderItem( comboboxItem ) {
+
+        let htmlWrapper = '<span class="combobox__word-matched">${0}</span>';
+        let content = replaceChars( comboboxItem.__string__, this.text, htmlWrapper );
+
+        return <div className="combobox__item" dangerouslySetInnerHTML={ { __html: content } } />;
     }
 
     renderList() {
@@ -466,22 +439,33 @@ export default class Combobox extends React.Component {
             {
                 this.state.comboboxItemsFiltered.map( ( item, key ) => {
 
-                    let isFocused = false;
-
-                    if ( key === this.state.indexOfItemFocused ) {
-
-                        isFocused = true;
-                    }
-
-                    return this.renderListItem( {
-                        key: key,
-                        comboboxItem: item,
-                        isFocused: isFocused
-                    } );
+                    return this.renderListItem( item, key );
                 } )
             }
             </div>
         );
+    }
+
+    shouldComponentUpdate( nextProps, nextState ) {
+
+        if ( this.props.items !== nextProps.items || this.props.fields !== nextProps.fields ) {
+
+            this.comboboxItems = makeComboboxItems( nextProps.items, nextProps.fields );
+        }
+
+        return true;
+    }
+
+    componentDidMount() {
+        
+        document.addEventListener( 'mouseup', this.handleClickOutside );
+        document.addEventListener( 'keydown', this.handleKeyDown );
+    }
+    
+    componentWillUnmount() {
+
+        document.removeEventListener( 'mouseup', this.handleClickOutside );
+        document.removeEventListener( 'keydown', this.handleKeyDown );
     }
 
     render() {
@@ -492,7 +476,7 @@ export default class Combobox extends React.Component {
                  className="combobox" 
                  ref={ elem => { this.domElement = elem; } } 
             >
-                { this.renderCount() }
+                { this.props.shouldRenderCount && this.renderCount() }
                 { this.renderHeader() }
                 { this.renderContent() }
             </div>
@@ -508,7 +492,6 @@ Combobox.defaultProps = {
     domElementId: undefined,
     textInputElementId: undefined,
     textInputElementName: undefined,
-    iconStyle: '',
     placeholder: '',
     indexOfFieldsToSort: -1,
     shouldRenderCount: false,

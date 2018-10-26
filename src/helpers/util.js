@@ -36,6 +36,20 @@ function generateRandomString() {
 }
 
 
+function replaceChars( string, chars, format ) {
+
+    if ( chars === '' || chars == undefined ) {
+
+        return string;
+    }
+
+    let regex = new RegExp( chars, 'ig' );
+    let replaced = string.replace( regex, format ).replace( /\${[0]}/ig, chars );
+
+    return replaced;
+}
+
+
 function setDefault( defaultValue, otherValue ) {
     
     if ( defaultValue === undefined ) {
@@ -167,6 +181,7 @@ module.exports = {
     isDescendant,
     isObject,
     generateRandomString,
+    replaceChars,
     setDefault,
     isNotEmptyArray,
     compareArrayOfNonObjects,
