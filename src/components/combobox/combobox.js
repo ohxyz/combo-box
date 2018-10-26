@@ -4,6 +4,7 @@ import { ComboboxItem, makeComboboxItems } from './data-model.js';
 import { generateRandomString,
          replaceChars,
          isDescendant,
+         sliceProps,
          isUndefinedStringNumberBooleanOrNull
 } from '../../helpers/util.js';
 
@@ -359,20 +360,20 @@ export default class Combobox extends React.Component {
 
     renderHeader() {
 
+        let inputProps = sliceProps( this.props, 'input' );
+
         return (
 
             <div className="combobox__header">
                 <input
-                    id={ this.props.textInputElementId }
-                    type="text" 
+                    type="text"
                     className="combobox__field"
-                    name={ this.props.textInputElementName }
                     data-text={ this.text }
-                    placeholder={ this.props.placeholder }
                     onChange={ this.handleTextInputChange }
                     onFocus={ this.handleTextInputFocus }
                     onBlur={ this.handleTextInputBlur }
                     ref={ elem => this.textInputElement = elem }
+                    { ...inputProps }
                 />
                 { this.props.shouldRenderIcon && this.renderIcon() }
             </div>
@@ -490,9 +491,6 @@ Combobox.defaultProps = {
     items: [],
     fields: [],
     domElementId: undefined,
-    textInputElementId: undefined,
-    textInputElementName: undefined,
-    placeholder: '',
     indexOfFieldsToSort: -1,
     shouldRenderCount: false,
     shouldRenderIcon: false,
