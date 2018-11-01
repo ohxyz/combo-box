@@ -1,5 +1,33 @@
 const util = require( '../util.js' );
 
+describe( 'sliceProps function', () => {
+
+    let o = {
+
+        'abc': 0,
+        'abcDe': 1,
+        'abcFg': 2,
+        'bc': 3,
+    };
+
+    it( 'should get right result', () => { 
+
+        var newObj = util.sliceProps( o, 'abc' );
+
+        expect( Object.keys( newObj ).length ).toBe( 2 );
+        expect( newObj.de ).toBe( 1 );
+        expect( newObj.fg ).toBe( 2 );
+    } );
+
+    it( 'should return an empty object', ()=> { 
+
+        var newObj = util.sliceProps( o, 'abcd' );
+        expect( Object.keys( newObj ).length ).toBe( 0 );
+        
+    } );
+
+} );
+
 describe( 'setDefault function', () => { 
 
     test( 'sets a default value when a variable is undefined', () => { 
