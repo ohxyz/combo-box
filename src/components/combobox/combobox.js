@@ -38,7 +38,6 @@ export default class Combobox extends React.Component {
         this.domElement = null;
         this.itemFocused = null;
         this.isTextInputFocused = false;
-        this.isIconClicked = false;
 
         this.state = {
 
