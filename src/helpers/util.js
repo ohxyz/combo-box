@@ -36,6 +36,34 @@ function generateRandomString() {
 }
 
 
+/**
+ * Slice piece of prop names of an object
+ */
+function sliceProps( object, piece, decap ) {
+
+    let newObject = {};
+    let shouldDecap = decap === false ? false : true;
+
+    for ( let prop in object ) {
+
+        let slicedPropName = prop.replace( piece, '' );
+
+        if ( slicedPropName !== '' && slicedPropName !== prop ) {
+
+            let newPropName = slicedPropName;
+
+            if ( shouldDecap === true ) {
+
+                newPropName = slicedPropName.charAt( 0 ).toLowerCase() + slicedPropName.slice( 1 );
+            }
+
+            newObject[ newPropName ] = object[ prop ];
+        }
+    }
+
+    return newObject;
+}
+
 function replaceChars( string, chars, format ) {
 
     if ( chars === '' || chars == undefined ) {
@@ -180,6 +208,7 @@ module.exports = {
 
     isDescendant,
     isObject,
+    sliceProps,
     generateRandomString,
     replaceChars,
     setDefault,

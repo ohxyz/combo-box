@@ -31,7 +31,7 @@ ReactDOM.render(
         id="my-combobox"
         inputId="my-combobox__input-id"
         inputName="my-combobox__input-name"
-        placeholder="Search people..."
+        inputPlaceholder="Search ..."
         strikes={ 2 }
         shouldRenderCount={ true }
         shouldRenderListOnFocus={ false }

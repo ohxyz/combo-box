@@ -66,6 +66,6 @@ class MyCombobox extends Combobox {
 
 ReactDOM.render(
     <MyCombobox items={ persons } />,
-    document.getElementById( 'container-3' )
+    document.getElementById( 'container' )
 );
 ```
