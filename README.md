@@ -49,16 +49,16 @@ ReactDOM.render(
 );
 ```
 
-# Inheritance
+# Render customized item by inheritance
 ```
 class MyCombobox extends Combobox {
 
-    renderItem( item ) {
+    renderItem( person ) {
         return (
-            <div className="combobox__item">
-                <div>{ item.name }</div>
-                { item.sex && <div>{ { Male: 'Man', Female: 'Woman' }[ item.sex ] }</div> }
-                { item.height && <div>Height: { item.height }CM</div> }
+            <div className="combobox__person">
+                <div>{ person.name }</div>
+                { person.sex && <div>{ { Male: 'Man', Female: 'Woman' }[ person.sex ] }</div> }
+                { person.height && <div>Height: { person.height }CM</div> }
             </div>
         );
     }
